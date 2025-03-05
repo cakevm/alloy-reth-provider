@@ -10,19 +10,21 @@ revm = { version = "19.5.0", features = ["alloydb"] }
 tokio = { version = "1.43.0", features = ["rt-multi-thread"] }
 
 # alloy
+alloy-consensus = "0.11.1"
 alloy-eips = "0.11.1"
 alloy-network = "0.11.1"
 alloy-primitives = "0.8.21"
 alloy-provider = "0.11.1"
+alloy-rpc-types-eth = "0.11.1"
 alloy-transport = "0.11.1"
 
 # reth
-reth-chainspec = { git = "https://github.com/paradigmxyz/reth", rev = "bb6dec7" }
-reth-db-models = { git = "https://github.com/paradigmxyz/reth", rev = "bb6dec7" }
-reth-errors = { git = "https://github.com/paradigmxyz/reth", rev = "bb6dec7" }
-reth-primitives = { git = "https://github.com/paradigmxyz/reth", rev = "bb6dec7" }
-reth-provider = { git = "https://github.com/paradigmxyz/reth", rev = "bb6dec7" }
-reth-trie = { git = "https://github.com/paradigmxyz/reth", rev = "bb6dec7" }
+reth-chainspec = { git = "https://github.com/paradigmxyz/reth", tag = "v1.2.0" }
+reth-db-models = { git = "https://github.com/paradigmxyz/reth", tag = "v1.2.0" }
+reth-errors = { git = "https://github.com/paradigmxyz/reth", tag = "v1.2.0" }
+reth-primitives = { git = "https://github.com/paradigmxyz/reth", tag = "v1.2.0" }
+reth-provider = { git = "https://github.com/paradigmxyz/reth", tag = "v1.2.0" }
+reth-trie = { git = "https://github.com/paradigmxyz/reth", tag = "v1.2.0" }
 
 
 [dev-dependencies]

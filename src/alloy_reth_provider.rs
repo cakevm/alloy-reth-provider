@@ -1,20 +1,24 @@
 use crate::alloy_reth_state_provider::AlloyRethStateProvider;
+use alloy_consensus::BlockHeader;
 use alloy_eips::eip4895::Withdrawals;
 use alloy_eips::{BlockHashOrNumber, BlockNumberOrTag};
 use alloy_network::primitives::{BlockTransactionsKind, HeaderResponse};
 use alloy_network::{BlockResponse, Network};
 use alloy_primitives::{Address, BlockHash, BlockNumber, TxHash, TxNumber, B256, U256};
 use alloy_provider::Provider;
+use alloy_rpc_types_eth::BlockTransactions;
+use reth_chainspec::{ChainSpec, HOLESKY, MAINNET};
 use reth_db_models::StoredBlockBodyIndices;
 use reth_errors::{ProviderError, ProviderResult};
-use reth_primitives::{Receipt, RecoveredBlock, SealedBlock, SealedHeader, TransactionMeta};
+use reth_primitives::{Receipt, RecoveredBlock, SealedBlock, SealedHeader, TransactionMeta, TransactionSigned};
 use reth_provider::errors::any::AnyError;
 use reth_provider::{
-    BlockBodyIndicesProvider, BlockHashReader, BlockIdReader, BlockNumReader, BlockReader, BlockSource, HeaderProvider, OmmersProvider,
-    ReceiptProvider, StateProviderBox, StateProviderFactory, TransactionVariant, TransactionsProvider, WithdrawalsProvider,
+    BlockBodyIndicesProvider, BlockHashReader, BlockIdReader, BlockNumReader, BlockReader, BlockSource, ChainSpecProvider, HeaderProvider,
+    OmmersProvider, ReceiptProvider, StateProviderBox, StateProviderFactory, TransactionVariant, TransactionsProvider, WithdrawalsProvider,
 };
 use std::marker::PhantomData;
 use std::ops::{RangeBounds, RangeInclusive};
+use std::sync::Arc;
 use tokio::runtime::Handle;
 
 #[derive(Clone)]
@@ -61,15 +65,26 @@ where
     }
 
     fn best_block_number(&self) -> ProviderResult<BlockNumber> {
-        todo!()
+        let block_number = tokio::task::block_in_place(move || Handle::current().block_on(self.provider.get_block_number()));
+        match block_number {
+            Ok(block_number) => Ok(block_number),
+            Err(e) => Err(ProviderError::Other(AnyError::new(e))),
+        }
     }
 
     fn last_block_number(&self) -> ProviderResult<BlockNumber> {
         todo!()
     }
 
-    fn block_number(&self, _hash: B256) -> ProviderResult<Option<BlockNumber>> {
-        todo!()
+    fn block_number(&self, hash: B256) -> ProviderResult<Option<BlockNumber>> {
+        let block = tokio::task::block_in_place(move || {
+            Handle::current().block_on(self.provider.get_block_by_hash(hash, BlockTransactionsKind::Hashes))
+        });
+        match block {
+            Ok(Some(block)) => Ok(Some(block.header().number())),
+            Ok(None) => Err(ProviderError::BlockHashNotFound(hash)),
+            Err(e) => Err(ProviderError::Other(AnyError::new(e))),
+        }
     }
 }
 
@@ -91,6 +106,23 @@ where
 
     fn canonical_hashes_range(&self, _start: BlockNumber, _end: BlockNumber) -> ProviderResult<Vec<B256>> {
         todo!()
+    }
+}
+
+impl<N, P> ChainSpecProvider for AlloyRethProvider<N, P>
+where
+    N: Network,
+    P: Provider<N> + Send + Sync + Clone + 'static,
+{
+    type ChainSpec = ChainSpec;
+
+    fn chain_spec(&self) -> Arc<ChainSpec> {
+        let chain_id = tokio::task::block_in_place(move || Handle::current().block_on(self.provider.get_chain_id())).unwrap_or(1);
+        if chain_id == 17000 {
+            HOLESKY.clone()
+        } else {
+            MAINNET.clone()
+        }
     }
 }
 
@@ -160,13 +192,20 @@ where
 
 impl<N, P> HeaderProvider for AlloyRethProvider<N, P>
 where
-    N: Network,
+    N: Network<HeaderResponse = alloy_rpc_types_eth::Header>,
     P: 'static + Clone + Provider<N> + Send + Sync,
 {
-    type Header = reth_primitives::Header;
+    type Header = alloy_consensus::Header;
 
-    fn header(&self, _block_hash: &BlockHash) -> ProviderResult<Option<Self::Header>> {
-        todo!()
+    fn header(&self, block_hash: &BlockHash) -> ProviderResult<Option<Self::Header>> {
+        let block = tokio::task::block_in_place(move || {
+            Handle::current().block_on(self.provider.get_block_by_hash(*block_hash, BlockTransactionsKind::Hashes))
+        });
+        match block {
+            Ok(Some(block)) => Ok(Some(block.header().clone().into())),
+            Ok(None) => Err(ProviderError::BlockHashNotFound(*block_hash)),
+            Err(e) => Err(ProviderError::Other(AnyError::new(e))),
+        }
     }
 
     fn header_by_number(&self, _num: u64) -> ProviderResult<Option<Self::Header>> {
@@ -300,7 +339,7 @@ where
 
 impl<N, P> OmmersProvider for AlloyRethProvider<N, P>
 where
-    N: Network,
+    N: Network<HeaderResponse = alloy_rpc_types_eth::Header>,
     P: 'static + Clone + Provider<N> + Send + Sync,
 {
     fn ommers(&self, _id: BlockHashOrNumber) -> ProviderResult<Option<Vec<Self::Header>>> {
@@ -310,17 +349,60 @@ where
 
 impl<N, P> BlockReader for AlloyRethProvider<N, P>
 where
-    N: Network,
+    N: Network<
+        TransactionResponse = alloy_rpc_types_eth::Transaction,
+        HeaderResponse = alloy_rpc_types_eth::Header,
+        BlockResponse = alloy_rpc_types_eth::Block,
+    >,
     P: Provider<N> + Send + Sync + Clone + 'static,
 {
-    type Block = reth_primitives::Block;
+    type Block = alloy_consensus::Block<TransactionSigned>;
 
     fn find_block_by_hash(&self, _hash: B256, _source: BlockSource) -> ProviderResult<Option<Self::Block>> {
         todo!()
     }
 
-    fn block(&self, _id: BlockHashOrNumber) -> ProviderResult<Option<Self::Block>> {
-        todo!()
+    fn block(&self, id: BlockHashOrNumber) -> ProviderResult<Option<Self::Block>> {
+        match id {
+            BlockHashOrNumber::Number(block_number) => {
+                let block = tokio::task::block_in_place(move || {
+                    Handle::current()
+                        .block_on(self.provider.get_block_by_number(BlockNumberOrTag::Number(block_number), BlockTransactionsKind::Full))
+                });
+                match block {
+                    Ok(Some(block)) => {
+                        let header = block.header().clone().into();
+                        let withdrawals = block.withdrawals;
+                        let BlockTransactions::Full(transactions) = block.transactions else { unimplemented!() };
+                        let transactions = transactions.into_iter().map(|tx| tx.into()).collect::<Vec<TransactionSigned>>();
+                        let body = alloy_consensus::BlockBody { transactions, ommers: vec![], withdrawals };
+
+                        Ok(Some(alloy_consensus::Block::new(header, body)))
+                    }
+                    Ok(None) => Err(ProviderError::BlockBodyIndicesNotFound(block_number)),
+                    Err(e) => Err(ProviderError::Other(AnyError::new(e))),
+                }
+            }
+            BlockHashOrNumber::Hash(block_hash) => {
+                let block = tokio::task::block_in_place(move || {
+                    Handle::current().block_on(self.provider.get_block_by_hash(block_hash, BlockTransactionsKind::Full))
+                });
+                match block {
+                    Ok(Some(block)) => {
+                        let header = block.header().clone().into();
+                        let withdrawals = block.withdrawals;
+                        let BlockTransactions::Full(transactions) = block.transactions else { unimplemented!() };
+                        let transactions = transactions.into_iter().map(|tx| tx.into()).collect::<Vec<TransactionSigned>>();
+                        let body = alloy_consensus::BlockBody { transactions, ommers: vec![], withdrawals };
+
+                        Ok(Some(alloy_consensus::Block::new(header, body)))
+                    }
+
+                    Ok(None) => Err(ProviderError::BlockHashNotFound(block_hash)),
+                    Err(e) => Err(ProviderError::Other(AnyError::new(e))),
+                }
+            }
+        }
     }
 
     fn pending_block(&self) -> ProviderResult<Option<SealedBlock<Self::Block>>> {
