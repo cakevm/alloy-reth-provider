@@ -6,32 +6,56 @@ license = "MIT OR Apache-2.0"
 
 [dependencies]
 parking_lot = "0.12.3"
-revm = { version = "19.5.0", features = ["alloydb"] }
 tokio = { version = "1.43.0", features = ["rt-multi-thread"] }
 
+# revm
+revm = { git = "https://github.com/bluealloy/revm", rev = "19a5f3b" }
+revm-context = { git = "https://github.com/bluealloy/revm", rev = "19a5f3b" }
+revm-database = { git = "https://github.com/bluealloy/revm", rev = "19a5f3b", features = ["alloydb"] }
+
 # alloy
-alloy-consensus = "0.11.1"
-alloy-eips = "0.11.1"
-alloy-network = "0.11.1"
+alloy-chains = "0.1.64"
+alloy-consensus = "0.12.2"
+alloy-eips = "0.12.2"
+alloy-network = "0.12.2"
 alloy-primitives = "0.8.21"
-alloy-provider = "0.11.1"
-alloy-rpc-types-eth = "0.11.1"
-alloy-transport = "0.11.1"
+alloy-provider = "0.12.2"
+alloy-rpc-types-eth = "0.12.2"
+alloy-transport = "0.12.2"
 
 # reth
-reth-chainspec = { git = "https://github.com/paradigmxyz/reth", tag = "v1.2.0" }
-reth-db-models = { git = "https://github.com/paradigmxyz/reth", tag = "v1.2.0" }
-reth-errors = { git = "https://github.com/paradigmxyz/reth", tag = "v1.2.0" }
-reth-primitives = { git = "https://github.com/paradigmxyz/reth", tag = "v1.2.0" }
-reth-provider = { git = "https://github.com/paradigmxyz/reth", tag = "v1.2.0" }
-reth-trie = { git = "https://github.com/paradigmxyz/reth", tag = "v1.2.0" }
+reth-chainspec = { git = "https://github.com/paradigmxyz/reth", rev = "a870ac4" }
+reth-db-models = { git = "https://github.com/paradigmxyz/reth", rev = "a870ac4" }
+reth-errors = { git = "https://github.com/paradigmxyz/reth", rev = "a870ac4" }
+reth-primitives = { git = "https://github.com/paradigmxyz/reth", rev = "a870ac4", features = ["serde-bincode-compat"] }
+reth-provider = { git = "https://github.com/paradigmxyz/reth", rev = "a870ac4" }
+reth-trie = { git = "https://github.com/paradigmxyz/reth", rev = "a870ac4" }
 
 # optimism
-reth-optimism-chainspec = { git = "https://github.com/paradigmxyz/reth", tag = "v1.2.0" }
+reth-optimism-chainspec = { git = "https://github.com/paradigmxyz/reth", rev = "a870ac4" }
+reth-optimism-primitives = { git = "https://github.com/paradigmxyz/reth", rev = "a870ac4", features = [
+  "reth-codec",
+  "serde",
+  "serde-bincode-compat",
+] }
 
 
 [dev-dependencies]
-alloy-node-bindings = "0.11.1"
+alloy-node-bindings = "0.12.2"
 eyre = "0.6.12"
-reth-revm = { git = "https://github.com/paradigmxyz/reth", tag = "v1.2.0" }
+reth-revm = { git = "https://github.com/paradigmxyz/reth", rev = "a870ac4" }
 ruint = "1.12.4"
+
+[patch.crates-io]
+op-revm = { git = "https://github.com/bluealloy/revm", rev = "19a5f3b" }
+revm = { git = "https://github.com/bluealloy/revm", rev = "19a5f3b" }
+revm-bytecode = { git = "https://github.com/bluealloy/revm", rev = "19a5f3b" }
+revm-context = { git = "https://github.com/bluealloy/revm", rev = "19a5f3b" }
+revm-context-interface = { git = "https://github.com/bluealloy/revm", rev = "19a5f3b" }
+revm-database = { git = "https://github.com/bluealloy/revm", rev = "19a5f3b" }
+revm-database-interface = { git = "https://github.com/bluealloy/revm", rev = "19a5f3b" }
+revm-inspector = { git = "https://github.com/bluealloy/revm", rev = "19a5f3b" }
+revm-interpreter = { git = "https://github.com/bluealloy/revm", rev = "19a5f3b" }
+revm-primitives = { git = "https://github.com/bluealloy/revm", rev = "19a5f3b" }
+revm-specification = { git = "https://github.com/bluealloy/revm", rev = "19a5f3b" }
+revm-state = { git = "https://github.com/bluealloy/revm", rev = "19a5f3b" }

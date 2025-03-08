@@ -6,6 +6,7 @@ use alloy_provider::Provider;
 use reth_errors::{ProviderError, ProviderResult};
 use reth_provider::errors::any::AnyError;
 pub(crate) use reth_provider::BlockHashReader;
+use std::future::IntoFuture;
 use tokio::runtime::Handle;
 
 impl<N, P> BlockHashReader for AlloyRethProvider<N, P>
@@ -15,7 +16,7 @@ where
 {
     fn block_hash(&self, number: BlockNumber) -> ProviderResult<Option<B256>> {
         let block = tokio::task::block_in_place(move || {
-            Handle::current().block_on(self.provider.get_block_by_number(number.into(), BlockTransactionsKind::Hashes))
+            Handle::current().block_on(self.provider.get_block_by_number(number.into()).kind(BlockTransactionsKind::Hashes).into_future())
         });
         match block {
             Ok(Some(block)) => Ok(Some(B256::from(*block.header().hash()))),
@@ -28,7 +29,7 @@ where
         let mut hashes = Vec::with_capacity((end - start) as usize);
         for i in start..=end {
             let block = tokio::task::block_in_place(move || {
-                Handle::current().block_on(self.provider.get_block_by_number(i.into(), BlockTransactionsKind::Hashes))
+                Handle::current().block_on(self.provider.get_block_by_number(i.into()).kind(BlockTransactionsKind::Hashes).into_future())
             });
             match block {
                 Ok(Some(block)) => hashes.push(B256::from(*block.header().hash())),

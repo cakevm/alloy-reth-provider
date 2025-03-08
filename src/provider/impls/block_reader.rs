@@ -8,6 +8,7 @@ use reth_errors::{ProviderError, ProviderResult};
 use reth_primitives::{RecoveredBlock, SealedBlock, TransactionSigned};
 use reth_provider::errors::any::AnyError;
 pub(crate) use reth_provider::{BlockReader, BlockSource, TransactionVariant};
+use std::future::IntoFuture;
 use std::ops::RangeInclusive;
 use tokio::runtime::Handle;
 
@@ -30,8 +31,12 @@ where
         match id {
             BlockHashOrNumber::Number(block_number) => {
                 let block = tokio::task::block_in_place(move || {
-                    Handle::current()
-                        .block_on(self.provider.get_block_by_number(BlockNumberOrTag::Number(block_number), BlockTransactionsKind::Full))
+                    Handle::current().block_on(
+                        self.provider
+                            .get_block_by_number(BlockNumberOrTag::Number(block_number))
+                            .kind(BlockTransactionsKind::Full)
+                            .into_future(),
+                    )
                 });
                 match block {
                     Ok(Some(block)) => {
@@ -49,7 +54,7 @@ where
             }
             BlockHashOrNumber::Hash(block_hash) => {
                 let block = tokio::task::block_in_place(move || {
-                    Handle::current().block_on(self.provider.get_block_by_hash(block_hash, BlockTransactionsKind::Full))
+                    Handle::current().block_on(self.provider.get_block_by_hash(block_hash).kind(BlockTransactionsKind::Full).into_future())
                 });
                 match block {
                     Ok(Some(block)) => {
@@ -81,14 +86,6 @@ where
         todo!()
     }
 
-    fn block_with_senders(
-        &self,
-        _id: BlockHashOrNumber,
-        _transaction_kind: TransactionVariant,
-    ) -> ProviderResult<Option<RecoveredBlock<Self::Block>>> {
-        todo!()
-    }
-
     fn sealed_block_with_senders(
         &self,
         _id: BlockHashOrNumber,
@@ -105,7 +102,15 @@ where
         todo!()
     }
 
-    fn sealed_block_with_senders_range(&self, _range: RangeInclusive<BlockNumber>) -> ProviderResult<Vec<RecoveredBlock<Self::Block>>> {
+    fn recovered_block(
+        &self,
+        _id: BlockHashOrNumber,
+        _transaction_kind: TransactionVariant,
+    ) -> ProviderResult<Option<RecoveredBlock<Self::Block>>> {
+        todo!()
+    }
+
+    fn recovered_block_range(&self, _range: RangeInclusive<BlockNumber>) -> ProviderResult<Vec<RecoveredBlock<Self::Block>>> {
         todo!()
     }
 }

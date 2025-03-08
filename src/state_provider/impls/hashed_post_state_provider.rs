@@ -3,7 +3,7 @@ use alloy_network::Network;
 use alloy_provider::Provider;
 use reth_provider::HashedPostStateProvider;
 use reth_trie::HashedPostState;
-use revm::db::BundleState;
+use revm_database::BundleState;
 
 impl<N, P> HashedPostStateProvider for AlloyRethStateProvider<N, P>
 where

@@ -7,6 +7,7 @@ use reth_errors::{ProviderError, ProviderResult};
 use reth_primitives::SealedHeader;
 use reth_provider::errors::any::AnyError;
 pub(crate) use reth_provider::HeaderProvider;
+use std::future::IntoFuture;
 use std::ops::RangeBounds;
 use tokio::runtime::Handle;
 
@@ -19,7 +20,7 @@ where
 
     fn header(&self, block_hash: &BlockHash) -> ProviderResult<Option<Self::Header>> {
         let block = tokio::task::block_in_place(move || {
-            Handle::current().block_on(self.provider.get_block_by_hash(*block_hash, BlockTransactionsKind::Hashes))
+            Handle::current().block_on(self.provider.get_block_by_hash(*block_hash).kind(BlockTransactionsKind::Hashes).into_future())
         });
         match block {
             Ok(Some(block)) => Ok(Some(block.header().clone().into())),

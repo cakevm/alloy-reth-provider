@@ -1,6 +1,5 @@
 use crate::AlloyRethStateProvider;
 use alloy_network::Network;
-use alloy_primitives::map::B256HashMap;
 use alloy_primitives::{Address, Bytes, B256};
 use alloy_provider::Provider;
 use reth_errors::ProviderResult;
@@ -20,7 +19,7 @@ where
         todo!()
     }
 
-    fn witness(&self, _input: TrieInput, _target: HashedPostState) -> ProviderResult<B256HashMap<Bytes>> {
+    fn witness(&self, _input: TrieInput, _target: HashedPostState) -> ProviderResult<Vec<Bytes>> {
         todo!()
     }
 }

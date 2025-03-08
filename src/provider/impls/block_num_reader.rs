@@ -8,6 +8,7 @@ use alloy_provider::Provider;
 use reth_errors::{ProviderError, ProviderResult};
 use reth_provider::errors::any::AnyError;
 pub(crate) use reth_provider::BlockNumReader;
+use std::future::IntoFuture;
 use tokio::runtime::Handle;
 
 impl<N, P> BlockNumReader for AlloyRethProvider<N, P>
@@ -17,7 +18,7 @@ where
 {
     fn chain_info(&self) -> ProviderResult<reth_chainspec::ChainInfo> {
         let block = tokio::task::block_in_place(move || {
-            Handle::current().block_on(self.provider.get_block(BlockId::latest(), BlockTransactionsKind::Hashes))
+            Handle::current().block_on(self.provider.get_block(BlockId::latest()).kind(BlockTransactionsKind::Hashes).into_future())
         });
         match block {
             Ok(Some(block)) => Ok(reth_chainspec::ChainInfo { best_hash: block.header().hash(), best_number: block.header().number() }),
@@ -40,7 +41,7 @@ where
 
     fn block_number(&self, hash: B256) -> ProviderResult<Option<BlockNumber>> {
         let block = tokio::task::block_in_place(move || {
-            Handle::current().block_on(self.provider.get_block_by_hash(hash, BlockTransactionsKind::Hashes))
+            Handle::current().block_on(self.provider.get_block_by_hash(hash).kind(BlockTransactionsKind::Hashes).into_future())
         });
         match block {
             Ok(Some(block)) => Ok(Some(block.header().number())),

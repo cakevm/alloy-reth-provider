@@ -6,7 +6,7 @@ use reth_errors::{ProviderError, ProviderResult};
 use reth_primitives::{Account, Bytecode};
 use reth_provider::errors::any::AnyError;
 use reth_provider::AccountReader;
-use revm::DatabaseRef;
+use revm_database::DatabaseRef;
 
 impl<N, P> AccountReader for AlloyRethStateProvider<N, P>
 where

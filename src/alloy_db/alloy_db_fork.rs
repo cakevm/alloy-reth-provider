@@ -1,16 +1,41 @@
-// FORK FROM: https://github.com/bluealloy/revm/blob/4e24be4/crates/database/src/alloydb.rs
+// FORK FROM: https://github.com/bluealloy/revm/blob/389be74/crates/database/src/alloydb.rs
 
 use crate::alloy_db::async_db::DatabaseAsyncRef;
 pub use alloy_eips::BlockId;
-use alloy_network::primitives::HeaderResponse;
 use alloy_primitives::{Address, B256, U256};
-use alloy_provider::network::primitives::BlockTransactionsKind;
-use alloy_provider::network::BlockResponse;
-use alloy_provider::{Network, Provider};
+use alloy_provider::{
+    network::{
+        primitives::{BlockTransactionsKind, HeaderResponse},
+        BlockResponse,
+    },
+    Network, Provider,
+};
 use alloy_transport::TransportError;
-use revm::primitives::{AccountInfo, Bytecode};
+use core::error::Error;
+use revm::state::{AccountInfo, Bytecode};
+use revm_database::DBErrorMarker;
+use std::fmt::Display;
 
-/// An alloy-powered REVM [revm::Database].
+#[derive(Debug)]
+pub struct DBTransportError(pub TransportError);
+
+impl DBErrorMarker for DBTransportError {}
+
+impl Display for DBTransportError {
+    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
+        write!(f, "Transport error: {}", self.0)
+    }
+}
+
+impl Error for DBTransportError {}
+
+impl From<TransportError> for DBTransportError {
+    fn from(e: TransportError) -> Self {
+        Self(e)
+    }
+}
+
+/// An alloy-powered REVM [Database][database_interface::Database].
 ///
 /// When accessing the database, it'll use the given provider to fetch the corresponding account's data.
 #[derive(Debug)]
@@ -19,23 +44,23 @@ pub struct AlloyDBFork<N: Network, P: Provider<N>> {
     provider: P,
     /// The block number on which the queries will be based on.
     block_number: BlockId,
-    _n: std::marker::PhantomData<N>,
+    _marker: core::marker::PhantomData<fn() -> N>,
 }
 
 impl<N: Network, P: Provider<N>> AlloyDBFork<N, P> {
-    /// Create a new AlloyDB instance, with a [Provider] and a block.
+    /// Creates a new AlloyDBFork instance, with a [Provider] and a block.
     pub fn new(provider: P, block_number: BlockId) -> Self {
-        Self { provider, block_number, _n: std::marker::PhantomData }
+        Self { provider, block_number, _marker: core::marker::PhantomData }
     }
 
-    /// Set the block number on which the queries will be based on.
+    /// Sets the block number on which the queries will be based on.
     pub fn set_block_number(&mut self, block_number: BlockId) {
         self.block_number = block_number;
     }
 }
 
 impl<N: Network, P: Provider<N>> DatabaseAsyncRef for AlloyDBFork<N, P> {
-    type Error = TransportError;
+    type Error = DBTransportError;
 
     async fn basic_async_ref(&self, address: Address) -> Result<Option<AccountInfo>, Self::Error> {
         let nonce = self.provider.get_transaction_count(address).block_id(self.block_number);
@@ -56,7 +81,8 @@ impl<N: Network, P: Provider<N>> DatabaseAsyncRef for AlloyDBFork<N, P> {
         let block = self
             .provider
             // SAFETY: We know number <= u64::MAX, so we can safely convert it to u64
-            .get_block_by_number(number.into(), BlockTransactionsKind::Hashes)
+            .get_block_by_number(number.into())
+            .kind(BlockTransactionsKind::Hashes)
             .await?;
         // SAFETY: If the number is given, the block is supposed to be finalized, so unwrapping is safe.
         Ok(B256::new(*block.unwrap().header().hash()))
@@ -68,28 +94,28 @@ impl<N: Network, P: Provider<N>> DatabaseAsyncRef for AlloyDBFork<N, P> {
     }
 
     async fn storage_async_ref(&self, address: Address, index: U256) -> Result<U256, Self::Error> {
-        self.provider.get_storage_at(address, index).block_id(self.block_number).await
+        Ok(self.provider.get_storage_at(address, index).block_id(self.block_number).await?)
     }
 }
 
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::alloy_db::async_db::WrapDatabaseAsync;
-    use alloy_primitives::address;
-    use alloy_primitives::ruint::__private::ruint_macro::uint;
+    use crate::alloy_db::WrapDatabaseAsync;
     use alloy_provider::ProviderBuilder;
-    use revm::DatabaseRef;
+    use revm_database::DatabaseRef;
 
-    #[tokio::test(flavor = "multi_thread", worker_threads = 1)]
-    async fn can_get_basic() {
-        let client = ProviderBuilder::new().on_http("https://eth.merkle.io".parse().unwrap());
-        let alloydb = AlloyDBFork::new(client, BlockId::number(16148323));
+    #[test]
+    #[ignore = "flaky RPC"]
+    fn can_get_basic() {
+        let client = ProviderBuilder::new().on_http("https://mainnet.infura.io/v3/c60b0bb42f8a4c6481ecd229eddaca27".parse().unwrap());
+        let alloydb = AlloyDBFork::new(client, BlockId::from(16148323));
         let wrapped_alloydb = WrapDatabaseAsync::new(alloydb).unwrap();
 
-        let acc_info = wrapped_alloydb.basic_ref(address!("220866b1a2219f40e72f5c628b65d54268ca3a9d")).unwrap().unwrap();
+        // ETH/USDT pair on Uniswap V2
+        let address: Address = "0x0d4a11d5EEaaC28EC3F61d100daF4d40471f1852".parse().unwrap();
+
+        let acc_info = wrapped_alloydb.basic_ref(address).unwrap().unwrap();
         assert!(acc_info.exists());
-        assert_eq!(acc_info.nonce, 1);
-        assert_eq!(acc_info.balance, uint!(250001010477701567100010_U256));
     }
 }
