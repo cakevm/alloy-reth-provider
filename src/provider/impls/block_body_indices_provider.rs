@@ -1,16 +1,16 @@
-use crate::AlloyRethProvider;
-use alloy_network::Network;
+use crate::primitives::AlloyRethNodePrimitives;
+use crate::{AlloyNetwork, AlloyRethProvider};
 use alloy_primitives::BlockNumber;
 use alloy_provider::Provider;
 use reth_db_models::StoredBlockBodyIndices;
 use reth_errors::ProviderResult;
-pub(crate) use reth_provider::BlockBodyIndicesProvider;
+use reth_provider::BlockBodyIndicesProvider;
 use std::ops::RangeInclusive;
 
-impl<N, P> BlockBodyIndicesProvider for AlloyRethProvider<N, P>
+impl<P, NP> BlockBodyIndicesProvider for AlloyRethProvider<P, NP>
 where
-    N: Network,
-    P: 'static + Clone + Provider<N> + Send + Sync,
+    P: 'static + Clone + Provider<AlloyNetwork> + Send + Sync,
+    NP: AlloyRethNodePrimitives,
 {
     fn block_body_indices(&self, _num: u64) -> ProviderResult<Option<StoredBlockBodyIndices>> {
         todo!()

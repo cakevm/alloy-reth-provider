@@ -14,7 +14,6 @@ revm-context = { git = "https://github.com/bluealloy/revm", rev = "19a5f3b" }
 revm-database = { git = "https://github.com/bluealloy/revm", rev = "19a5f3b", features = ["alloydb"] }
 
 # alloy
-alloy-chains = "0.1.64"
 alloy-consensus = "0.12.2"
 alloy-eips = "0.12.2"
 alloy-network = "0.12.2"
@@ -23,22 +22,32 @@ alloy-provider = "0.12.2"
 alloy-rpc-types-eth = "0.12.2"
 alloy-transport = "0.12.2"
 
+# op-alloy
+op-alloy-network = { version = "0.11.0", optional = true }
+
 # reth
 reth-chainspec = { git = "https://github.com/paradigmxyz/reth", rev = "a870ac4" }
 reth-db-models = { git = "https://github.com/paradigmxyz/reth", rev = "a870ac4" }
 reth-errors = { git = "https://github.com/paradigmxyz/reth", rev = "a870ac4" }
 reth-primitives = { git = "https://github.com/paradigmxyz/reth", rev = "a870ac4", features = ["serde-bincode-compat"] }
+reth-primitives-traits = { git = "https://github.com/paradigmxyz/reth", rev = "a870ac4" }
 reth-provider = { git = "https://github.com/paradigmxyz/reth", rev = "a870ac4" }
 reth-trie = { git = "https://github.com/paradigmxyz/reth", rev = "a870ac4" }
 
+# ethereum
+reth-ethereum-primitives = { git = "https://github.com/paradigmxyz/reth", rev = "a870ac4", features = ["alloy-compat", "reth-codec"] }
+
 # optimism
-reth-optimism-chainspec = { git = "https://github.com/paradigmxyz/reth", rev = "a870ac4" }
+reth-optimism-chainspec = { git = "https://github.com/paradigmxyz/reth", rev = "a870ac4", optional = true }
 reth-optimism-primitives = { git = "https://github.com/paradigmxyz/reth", rev = "a870ac4", features = [
+  "alloy-compat",
   "reth-codec",
   "serde",
   "serde-bincode-compat",
-] }
+], optional = true }
 
+[features]
+optimism = ["op-alloy-network", "reth-optimism-chainspec", "reth-optimism-primitives"]
 
 [dev-dependencies]
 alloy-node-bindings = "0.12.2"

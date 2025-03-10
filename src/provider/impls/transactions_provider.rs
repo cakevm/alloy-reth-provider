@@ -1,19 +1,19 @@
-use crate::AlloyRethProvider;
+use crate::primitives::AlloyRethNodePrimitives;
+use crate::{AlloyNetwork, AlloyRethProvider};
 use alloy_consensus::transaction::TransactionMeta;
 use alloy_eips::BlockHashOrNumber;
-use alloy_network::Network;
 use alloy_primitives::{Address, BlockNumber, TxHash, TxNumber};
 use alloy_provider::Provider;
 use reth_errors::ProviderResult;
-pub(crate) use reth_provider::TransactionsProvider;
+use reth_provider::TransactionsProvider;
 use std::ops::RangeBounds;
 
-impl<N, P> TransactionsProvider for AlloyRethProvider<N, P>
+impl<P, NP> TransactionsProvider for AlloyRethProvider<P, NP>
 where
-    N: Network,
-    P: 'static + Clone + Provider<N> + Send + Sync,
+    P: 'static + Clone + Provider<AlloyNetwork> + Send + Sync,
+    NP: AlloyRethNodePrimitives,
 {
-    type Transaction = reth_primitives::TransactionSigned;
+    type Transaction = NP::SignedTx;
 
     fn transaction_id(&self, _tx_hash: TxHash) -> ProviderResult<Option<TxNumber>> {
         todo!()

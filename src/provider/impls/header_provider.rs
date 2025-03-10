@@ -1,22 +1,23 @@
-use crate::AlloyRethProvider;
+use crate::primitives::AlloyRethNodePrimitives;
+use crate::{AlloyNetwork, AlloyRethProvider};
 use alloy_network::primitives::BlockTransactionsKind;
-use alloy_network::{BlockResponse, Network};
+use alloy_network::BlockResponse;
 use alloy_primitives::{BlockHash, BlockNumber, U256};
 use alloy_provider::Provider;
 use reth_errors::{ProviderError, ProviderResult};
 use reth_primitives::SealedHeader;
 use reth_provider::errors::any::AnyError;
-pub(crate) use reth_provider::HeaderProvider;
+use reth_provider::HeaderProvider;
 use std::future::IntoFuture;
 use std::ops::RangeBounds;
 use tokio::runtime::Handle;
 
-impl<N, P> HeaderProvider for AlloyRethProvider<N, P>
+impl<P, NP> HeaderProvider for AlloyRethProvider<P, NP>
 where
-    N: Network<HeaderResponse = alloy_rpc_types_eth::Header>,
-    P: 'static + Clone + Provider<N> + Send + Sync,
+    P: 'static + Clone + Provider<AlloyNetwork> + Send + Sync,
+    NP: AlloyRethNodePrimitives,
 {
-    type Header = alloy_consensus::Header;
+    type Header = NP::BlockHeader;
 
     fn header(&self, block_hash: &BlockHash) -> ProviderResult<Option<Self::Header>> {
         let block = tokio::task::block_in_place(move || {

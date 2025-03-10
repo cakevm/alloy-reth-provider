@@ -1,17 +1,17 @@
-use crate::AlloyRethProvider;
+use crate::primitives::AlloyRethNodePrimitives;
+use crate::{AlloyNetwork, AlloyRethProvider};
 use alloy_eips::BlockHashOrNumber;
-use alloy_network::Network;
 use alloy_primitives::{TxHash, TxNumber};
 use alloy_provider::Provider;
 use reth_errors::ProviderResult;
 use reth_primitives::Receipt;
-pub(crate) use reth_provider::ReceiptProvider;
+use reth_provider::ReceiptProvider;
 use std::ops::RangeBounds;
 
-impl<N, P> ReceiptProvider for AlloyRethProvider<N, P>
+impl<P, NP> ReceiptProvider for AlloyRethProvider<P, NP>
 where
-    N: Network,
-    P: 'static + Clone + Provider<N> + Send + Sync,
+    P: 'static + Clone + Provider<AlloyNetwork> + Send + Sync,
+    NP: AlloyRethNodePrimitives,
 {
     type Receipt = reth_primitives::Receipt;
 

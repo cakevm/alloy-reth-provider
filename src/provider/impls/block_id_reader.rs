@@ -1,13 +1,13 @@
-use crate::AlloyRethProvider;
-use alloy_network::Network;
+use crate::primitives::AlloyRethNodePrimitives;
+use crate::{AlloyNetwork, AlloyRethProvider};
 use alloy_provider::Provider;
 use reth_errors::ProviderResult;
-pub(crate) use reth_provider::BlockIdReader;
+use reth_provider::BlockIdReader;
 
-impl<N, P> BlockIdReader for AlloyRethProvider<N, P>
+impl<P, NP> BlockIdReader for AlloyRethProvider<P, NP>
 where
-    N: Network,
-    P: Provider<N> + Send + Sync + Clone + 'static,
+    P: Provider<AlloyNetwork> + Send + Sync + Clone + 'static,
+    NP: AlloyRethNodePrimitives,
 {
     fn pending_block_num_hash(&self) -> ProviderResult<Option<alloy_eips::BlockNumHash>> {
         todo!()

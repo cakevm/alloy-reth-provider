@@ -1,20 +1,38 @@
+#[cfg(not(feature = "optimism"))]
 use alloy_eips::BlockId;
+#[cfg(not(feature = "optimism"))]
 use alloy_primitives::utils::parse_units;
-use alloy_primitives::{address, Bytes, TxKind, B256, U256};
+#[cfg(not(feature = "optimism"))]
+use alloy_primitives::{address, Bytes, B256, U256};
+#[cfg(not(feature = "optimism"))]
 use alloy_provider::ProviderBuilder;
+#[cfg(not(feature = "optimism"))]
 use alloy_reth_provider::AlloyRethProvider;
+#[cfg(not(feature = "optimism"))]
+use reth_ethereum_primitives::EthPrimitives;
+#[cfg(not(feature = "optimism"))]
 use reth_provider::StateProviderFactory;
+#[cfg(not(feature = "optimism"))]
 use reth_revm::database::StateProviderDatabase;
-use revm::specification::hardfork::SpecId;
+#[cfg(not(feature = "optimism"))]
 use revm::{ExecuteEvm, MainBuilder, MainContext};
+#[cfg(not(feature = "optimism"))]
 use revm_context::result::ResultAndState;
+#[cfg(not(feature = "optimism"))]
 use revm_context::{BlockEnv, Context, Evm, TransactTo, TxEnv};
+#[cfg(not(feature = "optimism"))]
 use std::str::FromStr;
 
+#[cfg(feature = "optimism")]
+fn main() {
+    println!("Optimism not implemented");
+}
+
+#[cfg(not(feature = "optimism"))]
 #[tokio::main]
 async fn main() -> eyre::Result<()> {
-    let provider = ProviderBuilder::new().on_http("https://eth.merkle.io".parse()?);
-    let db_provider = AlloyRethProvider::new(provider);
+    let provider = ProviderBuilder::default().on_http("https://eth.merkle.io".parse()?);
+    let db_provider = AlloyRethProvider::new(provider, EthPrimitives::default());
     // Top of block state previous block
     let state_provider = db_provider.state_by_block_id(BlockId::number(16148322))?;
     let state_db = StateProviderDatabase::new(state_provider);

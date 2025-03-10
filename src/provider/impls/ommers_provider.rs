@@ -1,14 +1,14 @@
-use crate::AlloyRethProvider;
+use crate::primitives::AlloyRethNodePrimitives;
+use crate::{AlloyNetwork, AlloyRethProvider};
 use alloy_eips::BlockHashOrNumber;
-use alloy_network::Network;
 use alloy_provider::Provider;
 use reth_errors::ProviderResult;
-pub(crate) use reth_provider::OmmersProvider;
+use reth_provider::OmmersProvider;
 
-impl<N, P> OmmersProvider for AlloyRethProvider<N, P>
+impl<P, NP> OmmersProvider for AlloyRethProvider<P, NP>
 where
-    N: Network<HeaderResponse = alloy_rpc_types_eth::Header>,
-    P: 'static + Clone + Provider<N> + Send + Sync,
+    P: 'static + Clone + Provider<AlloyNetwork> + Send + Sync,
+    NP: AlloyRethNodePrimitives,
 {
     fn ommers(&self, _id: BlockHashOrNumber) -> ProviderResult<Option<Vec<Self::Header>>> {
         todo!()

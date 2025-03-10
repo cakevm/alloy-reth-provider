@@ -1,15 +1,15 @@
-use crate::AlloyRethProvider;
+use crate::primitives::AlloyRethNodePrimitives;
+use crate::{AlloyNetwork, AlloyRethProvider};
 use alloy_eips::eip4895::Withdrawals;
 use alloy_eips::BlockHashOrNumber;
-use alloy_network::Network;
 use alloy_provider::Provider;
 use reth_errors::ProviderResult;
-pub(crate) use reth_provider::WithdrawalsProvider;
+use reth_provider::WithdrawalsProvider;
 
-impl<N, P> WithdrawalsProvider for AlloyRethProvider<N, P>
+impl<P, NP> WithdrawalsProvider for AlloyRethProvider<P, NP>
 where
-    N: Network,
-    P: 'static + Clone + Provider<N> + Send + Sync,
+    P: 'static + Clone + Provider<AlloyNetwork> + Send + Sync,
+    NP: AlloyRethNodePrimitives,
 {
     fn withdrawals_by_block(&self, _id: BlockHashOrNumber, _timestamp: u64) -> ProviderResult<Option<Withdrawals>> {
         todo!()

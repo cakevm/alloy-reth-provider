@@ -1,18 +1,18 @@
+use crate::primitives::AlloyRethNodePrimitives;
 use crate::state_provider::alloy_reth_state_provider::AlloyRethStateProvider;
-use crate::AlloyRethProvider;
+use crate::{AlloyNetwork, AlloyRethProvider};
 use alloy_eips::BlockNumberOrTag;
-use alloy_network::Network;
 use alloy_primitives::{BlockHash, BlockNumber, B256};
 use alloy_provider::Provider;
 use reth_errors::{ProviderError, ProviderResult};
 use reth_provider::errors::any::AnyError;
-pub(crate) use reth_provider::{BlockHashReader, BlockIdReader, StateProviderBox, StateProviderFactory};
+use reth_provider::{BlockHashReader, BlockIdReader, StateProviderBox, StateProviderFactory};
 use tokio::runtime::Handle;
 
-impl<N, P> StateProviderFactory for AlloyRethProvider<N, P>
+impl<P, NP> StateProviderFactory for AlloyRethProvider<P, NP>
 where
-    N: Network,
-    P: Provider<N> + Send + Sync + Clone + 'static,
+    P: Provider<AlloyNetwork> + Send + Sync + Clone + 'static,
+    NP: AlloyRethNodePrimitives,
 {
     fn latest(&self) -> ProviderResult<StateProviderBox> {
         let block_number = tokio::task::block_in_place(move || Handle::current().block_on(self.provider.get_block_number()));
@@ -73,6 +73,7 @@ where
     }
 }
 
+#[cfg(not(feature = "optimism"))]
 #[cfg(test)]
 mod tests {
     use crate::AlloyRethProvider;
@@ -80,6 +81,7 @@ mod tests {
     use alloy_node_bindings::Anvil;
     use alloy_primitives::address;
     use alloy_provider::ProviderBuilder;
+    use reth_ethereum_primitives::EthPrimitives;
     use reth_provider::StateProviderFactory;
     use ruint::uint;
     use std::env;
@@ -89,7 +91,7 @@ mod tests {
         let node_url = env::var("MAINNET_HTTP").unwrap_or("https://eth.merkle.io".to_string());
         let provider = ProviderBuilder::new().on_http(node_url.parse().unwrap());
 
-        let db_provider = AlloyRethProvider::new(provider);
+        let db_provider = AlloyRethProvider::new(provider, EthPrimitives::default());
         let state = db_provider.state_by_block_id(BlockId::number(16148323)).unwrap();
         let acc_info = state.basic_account(&address!("220866b1a2219f40e72f5c628b65d54268ca3a9d")).unwrap().unwrap();
 
@@ -103,7 +105,7 @@ mod tests {
         let anvil = Anvil::new().fork(node_url).fork_block_number(16148323).spawn();
         let provider = ProviderBuilder::new().on_http(anvil.endpoint_url());
 
-        let db_provider = AlloyRethProvider::new(provider);
+        let db_provider = AlloyRethProvider::new(provider, EthPrimitives::default());
         let state = db_provider.latest().unwrap();
         let acc_info = state.basic_account(&address!("220866b1a2219f40e72f5c628b65d54268ca3a9d")).unwrap().unwrap();
 

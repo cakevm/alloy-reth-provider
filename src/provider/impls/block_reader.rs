@@ -1,27 +1,25 @@
-use crate::AlloyRethProvider;
+use crate::primitives::AlloyRethNodePrimitives;
+use crate::{AlloyNetwork, AlloyRethProvider};
 use alloy_eips::{BlockHashOrNumber, BlockNumberOrTag};
 use alloy_network::primitives::{BlockTransactions, BlockTransactionsKind};
-use alloy_network::{BlockResponse, Network};
+use alloy_network::BlockResponse;
 use alloy_primitives::{BlockNumber, B256};
 use alloy_provider::Provider;
 use reth_errors::{ProviderError, ProviderResult};
-use reth_primitives::{RecoveredBlock, SealedBlock, TransactionSigned};
+use reth_primitives::{BlockBody, RecoveredBlock, SealedBlock};
+use reth_primitives_traits::Block;
 use reth_provider::errors::any::AnyError;
-pub(crate) use reth_provider::{BlockReader, BlockSource, TransactionVariant};
+use reth_provider::{BlockReader, BlockSource, TransactionVariant};
 use std::future::IntoFuture;
 use std::ops::RangeInclusive;
 use tokio::runtime::Handle;
 
-impl<N, P> BlockReader for AlloyRethProvider<N, P>
+impl<P, NP> BlockReader for AlloyRethProvider<P, NP>
 where
-    N: Network<
-        TransactionResponse = alloy_rpc_types_eth::Transaction,
-        HeaderResponse = alloy_rpc_types_eth::Header,
-        BlockResponse = alloy_rpc_types_eth::Block,
-    >,
-    P: Provider<N> + Send + Sync + Clone + 'static,
+    P: Provider<AlloyNetwork> + Send + Sync + Clone + 'static,
+    NP: AlloyRethNodePrimitives,
 {
-    type Block = alloy_consensus::Block<TransactionSigned>;
+    type Block = NP::Block;
 
     fn find_block_by_hash(&self, _hash: B256, _source: BlockSource) -> ProviderResult<Option<Self::Block>> {
         todo!()
@@ -43,10 +41,23 @@ where
                         let header = block.header().clone().into();
                         let withdrawals = block.withdrawals;
                         let BlockTransactions::Full(transactions) = block.transactions else { unimplemented!() };
-                        let transactions = transactions.into_iter().map(|tx| tx.into()).collect::<Vec<TransactionSigned>>();
-                        let body = alloy_consensus::BlockBody { transactions, ommers: vec![], withdrawals };
+                        let transactions = transactions
+                            .into_iter()
+                            .map(|tx| {
+                                #[cfg(not(feature = "optimism"))]
+                                {
+                                    tx.into()
+                                }
 
-                        Ok(Some(alloy_consensus::Block::new(header, body)))
+                                #[cfg(feature = "optimism")]
+                                {
+                                    tx.inner.into()
+                                }
+                            })
+                            .collect::<Vec<NP::SignedTx>>();
+                        let body = BlockBody::<NP::SignedTx> { transactions, ommers: vec![], withdrawals };
+
+                        Ok(Some(Block::new(header, body)))
                     }
                     Ok(None) => Err(ProviderError::BlockBodyIndicesNotFound(block_number)),
                     Err(e) => Err(ProviderError::Other(AnyError::new(e))),
@@ -61,10 +72,23 @@ where
                         let header = block.header().clone().into();
                         let withdrawals = block.withdrawals;
                         let BlockTransactions::Full(transactions) = block.transactions else { unimplemented!() };
-                        let transactions = transactions.into_iter().map(|tx| tx.into()).collect::<Vec<TransactionSigned>>();
-                        let body = alloy_consensus::BlockBody { transactions, ommers: vec![], withdrawals };
+                        let transactions = transactions
+                            .into_iter()
+                            .map(|tx| {
+                                #[cfg(not(feature = "optimism"))]
+                                {
+                                    tx.into()
+                                }
 
-                        Ok(Some(alloy_consensus::Block::new(header, body)))
+                                #[cfg(feature = "optimism")]
+                                {
+                                    tx.inner.into()
+                                }
+                            })
+                            .collect::<Vec<NP::SignedTx>>();
+                        let body = BlockBody::<NP::SignedTx> { transactions, ommers: vec![], withdrawals };
+
+                        Ok(Some(Block::new(header, body)))
                     }
 
                     Ok(None) => Err(ProviderError::BlockHashNotFound(block_hash)),
