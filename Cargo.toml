@@ -9,36 +9,37 @@ parking_lot = "0.12.3"
 tokio = { version = "1.43.0", features = ["rt-multi-thread"] }
 
 # revm
-revm = { git = "https://github.com/bluealloy/revm", rev = "19a5f3b" }
-revm-context = { git = "https://github.com/bluealloy/revm", rev = "19a5f3b" }
-revm-database = { git = "https://github.com/bluealloy/revm", rev = "19a5f3b", features = ["alloydb"] }
+revm = { git = "https://github.com/bluealloy/revm", version = "20.0.0-alpha.5", features = ["alloydb"] }
+revm-context = "1.0.0-alpha.4"
+revm-database = "1.0.0-alpha.3"
+revm-state = "1.0.0-alpha.3"
 
 # alloy
-alloy-consensus = "0.12.2"
-alloy-eips = "0.12.2"
-alloy-network = "0.12.2"
-alloy-primitives = "0.8.21"
-alloy-provider = "0.12.2"
-alloy-transport = "0.12.2"
+alloy-consensus = "0.12.5"
+alloy-eips = "0.12.5"
+alloy-network = "0.12.5"
+alloy-primitives = "0.8.23"
+alloy-provider = "0.12.5"
+alloy-transport = "0.12.5"
 
 # op-alloy
-op-alloy-network = { version = "0.11.0", optional = true }
+op-alloy-network = { version = "0.11.2", optional = true }
 
 # reth
-reth-chainspec = { git = "https://github.com/paradigmxyz/reth", rev = "f9d2e10" }
-reth-db-models = { git = "https://github.com/paradigmxyz/reth", rev = "f9d2e10" }
-reth-errors = { git = "https://github.com/paradigmxyz/reth", rev = "f9d2e10" }
-reth-primitives = { git = "https://github.com/paradigmxyz/reth", rev = "f9d2e10", features = ["serde-bincode-compat"] }
-reth-primitives-traits = { git = "https://github.com/paradigmxyz/reth", rev = "f9d2e10" }
-reth-provider = { git = "https://github.com/paradigmxyz/reth", rev = "f9d2e10" }
-reth-trie = { git = "https://github.com/paradigmxyz/reth", rev = "f9d2e10" }
+reth-chainspec = { git = "https://github.com/paradigmxyz/reth", tag = "v1.3.0" }
+reth-db-models = { git = "https://github.com/paradigmxyz/reth", tag = "v1.3.0" }
+reth-errors = { git = "https://github.com/paradigmxyz/reth", tag = "v1.3.0" }
+reth-primitives = { git = "https://github.com/paradigmxyz/reth", tag = "v1.3.0", features = ["serde-bincode-compat"] }
+reth-primitives-traits = { git = "https://github.com/paradigmxyz/reth", tag = "v1.3.0" }
+reth-provider = { git = "https://github.com/paradigmxyz/reth", tag = "v1.3.0" }
+reth-trie = { git = "https://github.com/paradigmxyz/reth", tag = "v1.3.0" }
 
 # ethereum
-reth-ethereum-primitives = { git = "https://github.com/paradigmxyz/reth", rev = "f9d2e10", features = ["alloy-compat", "reth-codec"] }
+reth-ethereum-primitives = { git = "https://github.com/paradigmxyz/reth", tag = "v1.3.0", features = ["alloy-compat", "reth-codec"] }
 
 # optimism
-reth-optimism-chainspec = { git = "https://github.com/paradigmxyz/reth", rev = "f9d2e10", optional = true }
-reth-optimism-primitives = { git = "https://github.com/paradigmxyz/reth", rev = "f9d2e10", features = [
+reth-optimism-chainspec = { git = "https://github.com/paradigmxyz/reth", tag = "v1.3.0", optional = true }
+reth-optimism-primitives = { git = "https://github.com/paradigmxyz/reth", tag = "v1.3.0", features = [
   "alloy-compat",
   "reth-codec",
   "serde",
@@ -49,21 +50,7 @@ reth-optimism-primitives = { git = "https://github.com/paradigmxyz/reth", rev = 
 optimism = ["op-alloy-network", "reth-optimism-chainspec", "reth-optimism-primitives"]
 
 [dev-dependencies]
-alloy-node-bindings = "0.12.2"
+alloy-node-bindings = "0.12.5"
 eyre = "0.6.12"
-reth-revm = { git = "https://github.com/paradigmxyz/reth", rev = "f9d2e10" }
-ruint = "1.12.4"
-
-[patch.crates-io]
-op-revm = { git = "https://github.com/bluealloy/revm", rev = "19a5f3b" }
-revm = { git = "https://github.com/bluealloy/revm", rev = "19a5f3b" }
-revm-bytecode = { git = "https://github.com/bluealloy/revm", rev = "19a5f3b" }
-revm-context = { git = "https://github.com/bluealloy/revm", rev = "19a5f3b" }
-revm-context-interface = { git = "https://github.com/bluealloy/revm", rev = "19a5f3b" }
-revm-database = { git = "https://github.com/bluealloy/revm", rev = "19a5f3b" }
-revm-database-interface = { git = "https://github.com/bluealloy/revm", rev = "19a5f3b" }
-revm-inspector = { git = "https://github.com/bluealloy/revm", rev = "19a5f3b" }
-revm-interpreter = { git = "https://github.com/bluealloy/revm", rev = "19a5f3b" }
-revm-primitives = { git = "https://github.com/bluealloy/revm", rev = "19a5f3b" }
-revm-specification = { git = "https://github.com/bluealloy/revm", rev = "19a5f3b" }
-revm-state = { git = "https://github.com/bluealloy/revm", rev = "19a5f3b" }
+reth-revm = { git = "https://github.com/paradigmxyz/reth", tag = "v1.3.0" }
+ruint = "1.13.1"

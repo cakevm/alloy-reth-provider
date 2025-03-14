@@ -12,8 +12,8 @@ use alloy_provider::{
 };
 use alloy_transport::TransportError;
 use core::error::Error;
-use revm::state::{AccountInfo, Bytecode};
 use revm_database::DBErrorMarker;
+use revm_state::{AccountInfo, Bytecode};
 use std::fmt::Display;
 
 #[derive(Debug)]

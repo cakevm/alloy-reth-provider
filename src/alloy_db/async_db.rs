@@ -3,8 +3,8 @@ use core::future::Future;
 
 use alloy_primitives::{Address, B256, U256};
 use core::error::Error;
-use revm::state::{AccountInfo, Bytecode};
 use revm_database::{DBErrorMarker, Database, DatabaseRef};
+use revm_state::{AccountInfo, Bytecode};
 use tokio::runtime::{Handle, Runtime};
 
 /// The async EVM database interface

@@ -5,7 +5,7 @@ use alloy_provider::Provider;
 use reth_errors::{ProviderError, ProviderResult};
 use reth_provider::errors::any::AnyError;
 use reth_provider::BlockHashReader;
-use revm::DatabaseRef;
+use revm_database::DatabaseRef;
 
 impl<N, P> BlockHashReader for AlloyRethStateProvider<N, P>
 where

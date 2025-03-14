@@ -15,7 +15,7 @@ use reth_provider::StateProviderFactory;
 #[cfg(not(feature = "optimism"))]
 use reth_revm::database::StateProviderDatabase;
 #[cfg(not(feature = "optimism"))]
-use revm::{ExecuteEvm, MainBuilder, MainContext};
+use reth_revm::{ExecuteEvm, MainBuilder, MainContext};
 #[cfg(not(feature = "optimism"))]
 use revm_context::result::ResultAndState;
 #[cfg(not(feature = "optimism"))]
