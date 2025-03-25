@@ -1,5 +1,6 @@
 use crate::primitives::AlloyRethNodePrimitives;
 use crate::{AlloyNetwork, AlloyRethProvider};
+use alloy_eips::BlockNumberOrTag;
 use alloy_network::primitives::BlockTransactionsKind;
 use alloy_network::BlockResponse;
 use alloy_primitives::{BlockHash, BlockNumber, U256};
@@ -30,8 +31,15 @@ where
         }
     }
 
-    fn header_by_number(&self, _num: u64) -> ProviderResult<Option<Self::Header>> {
-        todo!()
+    fn header_by_number(&self, num: u64) -> ProviderResult<Option<Self::Header>> {
+        let block = tokio::task::block_in_place(move || {
+            Handle::current().block_on(self.provider.get_block_by_number(BlockNumberOrTag::Number(num)).into_future())
+        });
+        match block {
+            Ok(Some(block)) => Ok(Some(block.header().clone().into())),
+            Ok(None) => Err(ProviderError::BlockBodyIndicesNotFound(num)),
+            Err(e) => Err(ProviderError::Other(AnyError::new(e))),
+        }
     }
 
     fn header_td(&self, _hash: &BlockHash) -> ProviderResult<Option<U256>> {

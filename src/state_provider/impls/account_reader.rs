@@ -1,4 +1,5 @@
 use crate::AlloyRethStateProvider;
+use alloy_consensus::constants::KECCAK_EMPTY;
 use alloy_network::Network;
 use alloy_primitives::Address;
 use alloy_provider::Provider;
@@ -18,8 +19,12 @@ where
             Ok(Some(account)) => {
                 let bytecode_hash = match account.code {
                     Some(code) => {
-                        self.bytecode.write().insert(account.code_hash, Bytecode::new_raw(code.bytes()));
-                        Some(account.code_hash)
+                        if account.code_hash == KECCAK_EMPTY {
+                            None
+                        } else {
+                            self.bytecode.write().insert(account.code_hash, Bytecode::new_raw(code.bytes()));
+                            Some(account.code_hash)
+                        }
                     }
                     None => None,
                 };
