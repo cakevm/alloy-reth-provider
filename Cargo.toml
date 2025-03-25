@@ -26,20 +26,20 @@ alloy-transport = "0.12.6"
 op-alloy-network = { version = "0.11.2", optional = true }
 
 # reth
-reth-chainspec = { git = "https://github.com/cakevm/reth", rev = "c73771b" }
-reth-db-models = { git = "https://github.com/cakevm/reth", rev = "c73771b" }
-reth-errors = { git = "https://github.com/cakevm/reth", rev = "c73771b" }
-reth-primitives = { git = "https://github.com/cakevm/reth", rev = "c73771b", features = ["serde-bincode-compat"] }
-reth-primitives-traits = { git = "https://github.com/cakevm/reth", rev = "c73771b" }
-reth-provider = { git = "https://github.com/cakevm/reth", rev = "c73771b" }
-reth-trie = { git = "https://github.com/cakevm/reth", rev = "c73771b" }
+reth-chainspec = { git = "https://github.com/cakevm/reth", rev = "8a5cf7f" }
+reth-db-models = { git = "https://github.com/cakevm/reth", rev = "8a5cf7f" }
+reth-errors = { git = "https://github.com/cakevm/reth", rev = "8a5cf7f" }
+reth-primitives = { git = "https://github.com/cakevm/reth", rev = "8a5cf7f", features = ["serde-bincode-compat"] }
+reth-primitives-traits = { git = "https://github.com/cakevm/reth", rev = "8a5cf7f" }
+reth-provider = { git = "https://github.com/cakevm/reth", rev = "8a5cf7f" }
+reth-trie = { git = "https://github.com/cakevm/reth", rev = "8a5cf7f" }
 
 # ethereum
-reth-ethereum-primitives = { git = "https://github.com/cakevm/reth", rev = "c73771b", features = ["alloy-compat", "reth-codec"] }
+reth-ethereum-primitives = { git = "https://github.com/cakevm/reth", rev = "8a5cf7f", features = ["alloy-compat", "reth-codec"] }
 
 # optimism
-reth-optimism-chainspec = { git = "https://github.com/cakevm/reth", rev = "c73771b", optional = true }
-reth-optimism-primitives = { git = "https://github.com/cakevm/reth", rev = "c73771b", features = [
+reth-optimism-chainspec = { git = "https://github.com/cakevm/reth", rev = "8a5cf7f", optional = true }
+reth-optimism-primitives = { git = "https://github.com/cakevm/reth", rev = "8a5cf7f", features = [
   "alloy-compat",
   "reth-codec",
   "serde",
@@ -52,5 +52,5 @@ optimism = ["op-alloy-network", "reth-optimism-chainspec", "reth-optimism-primit
 [dev-dependencies]
 alloy-node-bindings = "0.12.6"
 eyre = "0.6.12"
-reth-revm = { git = "https://github.com/cakevm/reth", rev = "c73771b" }
+reth-revm = { git = "https://github.com/cakevm/reth", rev = "8a5cf7f" }
 ruint = "1.13.1"
