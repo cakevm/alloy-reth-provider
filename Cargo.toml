@@ -9,37 +9,37 @@ parking_lot = "0.12.3"
 tokio = { version = "1.43.0", features = ["rt-multi-thread"] }
 
 # revm
-revm = { git = "https://github.com/bluealloy/revm", version = "20.0.0-alpha.5", features = ["alloydb"] }
-revm-context = "1.0.0-alpha.4"
-revm-database = "1.0.0-alpha.3"
-revm-state = "1.0.0-alpha.3"
+revm = { git = "https://github.com/bluealloy/revm", version = "20.0.0-alpha.7", features = ["alloydb"] }
+revm-context = "1.0.0-alpha.6"
+revm-database = "1.0.0-alpha.5"
+revm-state = "1.0.0-alpha.5"
 
 # alloy
-alloy-consensus = "0.12.5"
-alloy-eips = "0.12.5"
-alloy-network = "0.12.5"
+alloy-consensus = "0.12.6"
+alloy-eips = "0.12.6"
+alloy-network = "0.12.6"
 alloy-primitives = "0.8.23"
-alloy-provider = "0.12.5"
-alloy-transport = "0.12.5"
+alloy-provider = "0.12.6"
+alloy-transport = "0.12.6"
 
 # op-alloy
 op-alloy-network = { version = "0.11.2", optional = true }
 
 # reth
-reth-chainspec = { git = "https://github.com/paradigmxyz/reth", tag = "v1.3.0" }
-reth-db-models = { git = "https://github.com/paradigmxyz/reth", tag = "v1.3.0" }
-reth-errors = { git = "https://github.com/paradigmxyz/reth", tag = "v1.3.0" }
-reth-primitives = { git = "https://github.com/paradigmxyz/reth", tag = "v1.3.0", features = ["serde-bincode-compat"] }
-reth-primitives-traits = { git = "https://github.com/paradigmxyz/reth", tag = "v1.3.0" }
-reth-provider = { git = "https://github.com/paradigmxyz/reth", tag = "v1.3.0" }
-reth-trie = { git = "https://github.com/paradigmxyz/reth", tag = "v1.3.0" }
+reth-chainspec = { git = "https://github.com/cakevm/reth", rev = "c73771b" }
+reth-db-models = { git = "https://github.com/cakevm/reth", rev = "c73771b" }
+reth-errors = { git = "https://github.com/cakevm/reth", rev = "c73771b" }
+reth-primitives = { git = "https://github.com/cakevm/reth", rev = "c73771b", features = ["serde-bincode-compat"] }
+reth-primitives-traits = { git = "https://github.com/cakevm/reth", rev = "c73771b" }
+reth-provider = { git = "https://github.com/cakevm/reth", rev = "c73771b" }
+reth-trie = { git = "https://github.com/cakevm/reth", rev = "c73771b" }
 
 # ethereum
-reth-ethereum-primitives = { git = "https://github.com/paradigmxyz/reth", tag = "v1.3.0", features = ["alloy-compat", "reth-codec"] }
+reth-ethereum-primitives = { git = "https://github.com/cakevm/reth", rev = "c73771b", features = ["alloy-compat", "reth-codec"] }
 
 # optimism
-reth-optimism-chainspec = { git = "https://github.com/paradigmxyz/reth", tag = "v1.3.0", optional = true }
-reth-optimism-primitives = { git = "https://github.com/paradigmxyz/reth", tag = "v1.3.0", features = [
+reth-optimism-chainspec = { git = "https://github.com/cakevm/reth", rev = "c73771b", optional = true }
+reth-optimism-primitives = { git = "https://github.com/cakevm/reth", rev = "c73771b", features = [
   "alloy-compat",
   "reth-codec",
   "serde",
@@ -50,7 +50,7 @@ reth-optimism-primitives = { git = "https://github.com/paradigmxyz/reth", tag = 
 optimism = ["op-alloy-network", "reth-optimism-chainspec", "reth-optimism-primitives"]
 
 [dev-dependencies]
-alloy-node-bindings = "0.12.5"
+alloy-node-bindings = "0.12.6"
 eyre = "0.6.12"
-reth-revm = { git = "https://github.com/paradigmxyz/reth", tag = "v1.3.0" }
+reth-revm = { git = "https://github.com/cakevm/reth", rev = "c73771b" }
 ruint = "1.13.1"

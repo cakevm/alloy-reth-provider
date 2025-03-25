@@ -17,6 +17,10 @@ use reth_revm::database::StateProviderDatabase;
 #[cfg(not(feature = "optimism"))]
 use reth_revm::{ExecuteEvm, MainBuilder, MainContext};
 #[cfg(not(feature = "optimism"))]
+use revm::handler::EthPrecompiles;
+#[cfg(not(feature = "optimism"))]
+use revm::inspector::NoOpInspector;
+#[cfg(not(feature = "optimism"))]
 use revm_context::result::ResultAndState;
 #[cfg(not(feature = "optimism"))]
 use revm_context::{BlockEnv, Context, Evm, TransactTo, TxEnv};
@@ -65,7 +69,7 @@ async fn main() -> eyre::Result<()> {
         ..TxEnv::default()
     };
 
-    let mut evm = Evm::new(ctx);
+    let mut evm = Evm::new(ctx, NoOpInspector, EthPrecompiles::default());
     let ResultAndState { result, state } = evm.transact(tx)?;
 
     println!("Success: {}", result.is_success());
