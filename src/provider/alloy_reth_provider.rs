@@ -2,7 +2,7 @@ use crate::primitives::AlloyRethNodePrimitives;
 use crate::AlloyNetwork;
 use alloy_provider::Provider;
 
-#[derive(Clone)]
+#[derive(Clone, Debug)]
 pub struct AlloyRethProvider<P: Send + Sync + Clone + 'static, NP: AlloyRethNodePrimitives> {
     pub(crate) provider: P,
     _np: NP,

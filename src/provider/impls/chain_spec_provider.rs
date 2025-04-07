@@ -4,12 +4,13 @@ use alloy_provider::Provider;
 use reth_chainspec::{ChainSpec, ChainSpecProvider, HOLESKY, MAINNET, SEPOLIA};
 #[cfg(feature = "optimism")]
 use reth_optimism_chainspec::{BASE_MAINNET, BASE_SEPOLIA, OP_MAINNET, OP_SEPOLIA};
+use std::fmt::Debug;
 use std::sync::Arc;
 use tokio::runtime::Handle;
 
 impl<P, NP> ChainSpecProvider for AlloyRethProvider<P, NP>
 where
-    P: Provider<AlloyNetwork> + Send + Sync + Clone + 'static,
+    P: Provider<AlloyNetwork> + Send + Sync + Clone + Debug + 'static,
     NP: AlloyRethNodePrimitives,
 {
     type ChainSpec = ChainSpec;
