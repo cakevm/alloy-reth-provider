@@ -5,7 +5,7 @@ use alloy_primitives::{TxHash, TxNumber};
 use alloy_provider::Provider;
 use reth_errors::ProviderResult;
 use reth_primitives::Receipt;
-use reth_provider::ReceiptProvider;
+use reth_provider::{ReceiptProvider, ReceiptProviderIdExt};
 use std::ops::RangeBounds;
 
 impl<P, NP> ReceiptProvider for AlloyRethProvider<P, NP>
@@ -30,4 +30,11 @@ where
     fn receipts_by_tx_range(&self, _range: impl RangeBounds<TxNumber>) -> ProviderResult<Vec<Receipt>> {
         todo!()
     }
+}
+
+impl<P, NP> ReceiptProviderIdExt for AlloyRethProvider<P, NP>
+where
+    NP: AlloyRethNodePrimitives,
+    P: 'static + Clone + Provider<AlloyNetwork> + Send + Sync,
+{
 }

@@ -14,6 +14,9 @@ let db_provider = AlloyRethProvider::new(provider, EthPrimitives::default());
 let state = db_provider.state_by_block_id(BlockId::number(16148323)).unwrap();
 ```
 
+## Versioning
+The version is always matching the compatible reth version. If this crate receives an update a suffix .e.g. `-v2` is added to the version.
+
 ## Acknowledgements
 Many, many thanks to the team of [reth](https://github.com/paradigmxyz/reth) and [alloy-rs](https://github.com/alloy-rs/alloy) for the awesome work they do. Some parts of the trait implementation are taken from reth. Also, many thanks to [revm](https://github.com/bluealloy/revm). The `alloy_db` part is a copy/paste from revm because this part is not included in the latest revm version, and it makes it easier to be in sync with the latest Alloy version.
 

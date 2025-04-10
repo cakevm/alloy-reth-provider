@@ -1,15 +1,15 @@
 use crate::primitives::AlloyRethNodePrimitives;
 use crate::{AlloyNetwork, AlloyRethProvider};
-use alloy_eips::{BlockHashOrNumber, BlockNumberOrTag};
+use alloy_eips::{BlockHashOrNumber, BlockId, BlockNumberOrTag};
 use alloy_network::primitives::{BlockTransactions, BlockTransactionsKind};
 use alloy_network::BlockResponse;
 use alloy_primitives::{BlockNumber, B256};
 use alloy_provider::Provider;
 use reth_errors::{ProviderError, ProviderResult};
 use reth_primitives::{BlockBody, RecoveredBlock, SealedBlock};
-use reth_primitives_traits::Block;
+use reth_primitives_traits::{Block, SealedHeader};
 use reth_provider::errors::any::AnyError;
-use reth_provider::{BlockReader, BlockSource, TransactionVariant};
+use reth_provider::{BlockReader, BlockReaderIdExt, BlockSource, TransactionVariant};
 use std::future::IntoFuture;
 use std::ops::RangeInclusive;
 use tokio::runtime::Handle;
@@ -135,6 +135,28 @@ where
     }
 
     fn recovered_block_range(&self, _range: RangeInclusive<BlockNumber>) -> ProviderResult<Vec<RecoveredBlock<Self::Block>>> {
+        todo!()
+    }
+}
+
+impl<P, NP> BlockReaderIdExt for AlloyRethProvider<P, NP>
+where
+    P: Provider<AlloyNetwork> + Send + Sync + Clone + 'static,
+    NP: AlloyRethNodePrimitives,
+{
+    fn block_by_id(&self, _id: BlockId) -> ProviderResult<Option<Self::Block>> {
+        todo!()
+    }
+
+    fn sealed_header_by_id(&self, _id: BlockId) -> ProviderResult<Option<SealedHeader<Self::Header>>> {
+        todo!()
+    }
+
+    fn header_by_id(&self, _id: BlockId) -> ProviderResult<Option<Self::Header>> {
+        todo!()
+    }
+
+    fn ommers_by_id(&self, _id: BlockId) -> ProviderResult<Option<Vec<Self::Header>>> {
         todo!()
     }
 }
