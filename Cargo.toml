@@ -32,25 +32,25 @@ alloy-transport = { version = "0.14.0", default-features = false }
 op-alloy-network = { version = "0.14.1", default-features = false, optional = true }
 
 # reth
-reth-chainspec = { git = "https://github.com/paradigmxyz/reth", tag = "v1.3.11", default-features = false }
-reth-db-models = { git = "https://github.com/paradigmxyz/reth", tag = "v1.3.11", default-features = false }
-reth-errors = { git = "https://github.com/paradigmxyz/reth", tag = "v1.3.11", default-features = false }
-reth-primitives = { git = "https://github.com/paradigmxyz/reth", tag = "v1.3.11", default-features = false, features = [
+reth-chainspec = { git = "https://github.com/cakevm/reth", branch = "tx-pool", default-features = false }
+reth-db-models = { git = "https://github.com/cakevm/reth", branch = "tx-pool", default-features = false }
+reth-errors = { git = "https://github.com/cakevm/reth", branch = "tx-pool", default-features = false }
+reth-primitives = { git = "https://github.com/cakevm/reth", branch = "tx-pool", default-features = false, features = [
   "serde-bincode-compat",
 ] }
-reth-primitives-traits = { git = "https://github.com/paradigmxyz/reth", tag = "v1.3.11", default-features = false }
-reth-provider = { git = "https://github.com/paradigmxyz/reth", tag = "v1.3.11", default-features = false }
-reth-trie = { git = "https://github.com/paradigmxyz/reth", tag = "v1.3.11", default-features = false }
+reth-primitives-traits = { git = "https://github.com/cakevm/reth", branch = "tx-pool", default-features = false }
+reth-provider = { git = "https://github.com/cakevm/reth", branch = "tx-pool", default-features = false }
+reth-trie = { git = "https://github.com/cakevm/reth", branch = "tx-pool", default-features = false }
 
 # ethereum
-reth-ethereum-primitives = { git = "https://github.com/paradigmxyz/reth", tag = "v1.3.11", default-features = false, features = [
+reth-ethereum-primitives = { git = "https://github.com/cakevm/reth", branch = "tx-pool", default-features = false, features = [
   "alloy-compat",
   "reth-codec",
 ] }
 
 # optimism
-reth-optimism-chainspec = { git = "https://github.com/paradigmxyz/reth", tag = "v1.3.11", default-features = false, optional = true }
-reth-optimism-primitives = { git = "https://github.com/paradigmxyz/reth", tag = "v1.3.11", default-features = false, features = [
+reth-optimism-chainspec = { git = "https://github.com/cakevm/reth", branch = "tx-pool", default-features = false, optional = true }
+reth-optimism-primitives = { git = "https://github.com/cakevm/reth", branch = "tx-pool", default-features = false, features = [
   "alloy-compat",
   "reth-codec",
   "serde",
@@ -65,8 +65,50 @@ alloy-node-bindings = "0.14.0"
 alloy-provider = { version = "0.14.0", default-features = false, features = ["alloy-transport-ws", "reqwest", "reqwest-default-tls", "ws"] }
 eyre = "0.6.12"
 futures-util = "0.3.31"
-reth-revm = { git = "https://github.com/paradigmxyz/reth", tag = "v1.3.11" }
-reth-tasks = { git = "https://github.com/paradigmxyz/reth", tag = "v1.3.11" }
-reth-transaction-pool = { git = "https://github.com/paradigmxyz/reth", tag = "v1.3.11" }
+reth-revm = { git = "https://github.com/cakevm/reth", branch = "tx-pool" }
+reth-tasks = { git = "https://github.com/cakevm/reth", branch = "tx-pool" }
+reth-transaction-pool = { git = "https://github.com/cakevm/reth", branch = "tx-pool" }
 ruint = "1.13.1"
 tracing-subscriber = { version = "0.3.19", features = ["env-filter"] }
+
+
+## local
+## reth
+#reth-chainspec = { path = "../reth/crates/chainspec", default-features = false }
+#reth-db-models = { path = "../reth/crates/storage/db-models", default-features = false }
+#reth-errors = { path = "../reth/crates/errors", default-features = false }
+#reth-primitives = { path = "../reth/crates/primitives", default-features = false, features = [
+#  "serde-bincode-compat",
+#] }
+#reth-primitives-traits = { path = "../reth/crates/primitives-traits", default-features = false }
+#reth-provider = { path = "../reth/crates/storage/provider", default-features = false }
+#reth-trie = { path = "../reth/crates/trie/trie", default-features = false }
+#
+## ethereum
+#reth-ethereum-primitives = { path = "../reth/crates/ethereum/primitives", default-features = false, features = [
+#  "alloy-compat",
+#  "reth-codec",
+#] }
+#
+## optimism
+#reth-optimism-chainspec = { path = "../reth/crates/optimism/chainspec", default-features = false, optional = true }
+#reth-optimism-primitives = {  path = "../reth/crates/optimism/primitives", default-features = false, features = [
+#  "alloy-compat",
+#  "reth-codec",
+#  "serde",
+#  "serde-bincode-compat",
+#], optional = true }
+#
+#[features]
+#optimism = ["op-alloy-network", "reth-optimism-chainspec", "reth-optimism-primitives"]
+#
+#[dev-dependencies]
+#alloy-node-bindings = "0.14.0"
+#alloy-provider = { version = "0.14.0", default-features = false, features = ["alloy-transport-ws", "reqwest", "reqwest-default-tls", "ws"] }
+#eyre = "0.6.12"
+#futures-util = "0.3.31"
+#reth-revm = { path = "../reth/crates/revm" }
+#reth-tasks = { path = "../reth/crates/tasks" }
+#reth-transaction-pool = { path = "../reth/crates/transaction-pool" }
+#ruint = "1.13.1"
+#tracing-subscriber = { version = "0.3.19", features = ["env-filter"] }
