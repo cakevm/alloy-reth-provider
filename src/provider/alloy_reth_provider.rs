@@ -52,14 +52,14 @@ mod tests {
     #[cfg(not(feature = "optimism"))]
     #[tokio::test(flavor = "multi_thread", worker_threads = 1)]
     async fn test_alloy_reth_provider_ethereum() {
-        let provider = ProviderBuilder::new().on_http("https://eth.merkle.io".parse().unwrap());
+        let provider = ProviderBuilder::new().connect_http("https://eth.merkle.io".parse().unwrap());
         test_trait(AlloyRethProvider::new(provider, EthPrimitives::default()));
     }
 
     #[cfg(feature = "optimism")]
     #[tokio::test(flavor = "multi_thread", worker_threads = 1)]
     async fn test_alloy_reth_provider_any_network() {
-        let provider = ProviderBuilder::<_, _, Optimism>::default().on_http("https://base.merkle.io".parse().unwrap());
+        let provider = ProviderBuilder::<_, _, Optimism>::default().connect_http("https://base.merkle.io".parse().unwrap());
         test_trait(AlloyRethProvider::new(provider, OpPrimitives::default()));
     }
 }

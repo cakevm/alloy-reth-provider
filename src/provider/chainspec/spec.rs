@@ -58,7 +58,7 @@ mod tests {
     #[tokio::test(flavor = "multi_thread", worker_threads = 1)]
     async fn test_chain_spec_eth() {
         let node_url = env::var("MAINNET_HTTP").unwrap_or("https://eth.merkle.io".to_string());
-        let provider = ProviderBuilder::new().on_http(node_url.parse().unwrap());
+        let provider = ProviderBuilder::new().connect_http(node_url.parse().unwrap());
 
         let db_provider = AlloyRethProvider::new(provider, EthPrimitives::default());
         let chain_spec = db_provider.chain_spec();
@@ -70,7 +70,7 @@ mod tests {
     #[tokio::test(flavor = "multi_thread", worker_threads = 1)]
     async fn test_chain_spec_base() {
         let node_url = env::var("BASE_HTTP").unwrap_or("https://base.merkle.io".to_string());
-        let provider = ProviderBuilder::<_, _, Optimism>::default().on_http(node_url.parse().unwrap());
+        let provider = ProviderBuilder::<_, _, Optimism>::default().connect_http(node_url.parse().unwrap());
 
         let db_provider = AlloyRethProvider::new(provider, OpPrimitives::default());
         let chain_spec = db_provider.chain_spec();

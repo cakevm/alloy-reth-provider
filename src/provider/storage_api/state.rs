@@ -89,7 +89,7 @@ mod tests {
     #[tokio::test(flavor = "multi_thread", worker_threads = 1)]
     async fn test_state_provider_factory_state_by_block_id() {
         let node_url = env::var("MAINNET_HTTP").unwrap_or("https://eth.merkle.io".to_string());
-        let provider = ProviderBuilder::new().on_http(node_url.parse().unwrap());
+        let provider = ProviderBuilder::new().connect_http(node_url.parse().unwrap());
 
         let db_provider = AlloyRethProvider::new(provider, EthPrimitives::default());
         let state = db_provider.state_by_block_id(BlockId::number(16148323)).unwrap();
@@ -103,7 +103,7 @@ mod tests {
     async fn test_state_provider_factory_latest() {
         let node_url = env::var("MAINNET_HTTP").unwrap_or("https://eth.merkle.io".to_string());
         let anvil = Anvil::new().fork(node_url).fork_block_number(16148323).spawn();
-        let provider = ProviderBuilder::new().on_http(anvil.endpoint_url());
+        let provider = ProviderBuilder::new().connect_http(anvil.endpoint_url());
 
         let db_provider = AlloyRethProvider::new(provider, EthPrimitives::default());
         let state = db_provider.latest().unwrap();

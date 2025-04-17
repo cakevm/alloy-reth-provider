@@ -35,7 +35,7 @@ fn main() {
 #[cfg(not(feature = "optimism"))]
 #[tokio::main]
 async fn main() -> eyre::Result<()> {
-    let provider = ProviderBuilder::default().on_http("https://eth.merkle.io".parse()?);
+    let provider = ProviderBuilder::default().connect_http("https://eth.merkle.io".parse()?);
     let db_provider = AlloyRethProvider::new(provider, EthPrimitives::default());
     // Top of block state previous block
     let state_provider = db_provider.state_by_block_id(BlockId::number(16148322))?;

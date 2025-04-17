@@ -46,7 +46,7 @@ where
                             .map(|tx| {
                                 #[cfg(not(feature = "optimism"))]
                                 {
-                                    tx.into()
+                                    tx.into_inner().into()
                                 }
 
                                 #[cfg(feature = "optimism")]
@@ -77,7 +77,7 @@ where
                             .map(|tx| {
                                 #[cfg(not(feature = "optimism"))]
                                 {
-                                    tx.into()
+                                    tx.into_inner().into()
                                 }
 
                                 #[cfg(feature = "optimism")]

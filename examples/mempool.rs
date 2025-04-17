@@ -54,7 +54,7 @@ async fn main() -> eyre::Result<()> {
     tracing_subscriber::registry().with(fmt::layer()).with(EnvFilter::from("info")).init();
 
     let ws = WsConnect::new("wss://eth.llamarpc.com");
-    let ws_provider = ProviderBuilder::new().on_ws(ws).await?;
+    let ws_provider = ProviderBuilder::new().connect_ws(ws).await?;
     let reth_provider = AlloyRethProvider::new(ws_provider.clone(), EthPrimitives::default());
 
     let canon_state_notification_sender = reth_provider.canon_state_notification_sender.clone();
@@ -71,7 +71,7 @@ async fn main() -> eyre::Result<()> {
             let header = block.header.clone();
 
             // We need to convert an RPC block to a reth recovered block
-            let block = block.map_transactions(|tx| tx.into());
+            let block = block.map_transactions(|tx| tx.into_inner().into());
             let block_body = BlockBody::<TransactionSigned> {
                 transactions: block.transactions.into_transactions().collect(),
                 ommers: vec![],

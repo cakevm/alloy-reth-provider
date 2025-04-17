@@ -7,7 +7,7 @@ See [evm_call.rs](./examples/evm_call.rs) for a complete example.
 Quckstart:
 ```rust
 // Init the provider
-let provider = ProviderBuilder::new().on_http("https://eth.merkle.io".parse().unwrap());
+let provider = ProviderBuilder::new().connect_http("https://eth.merkle.io".parse().unwrap());
 // Init the db provider
 let db_provider = AlloyRethProvider::new(provider, EthPrimitives::default());
 // Use the StateProviderFactory
