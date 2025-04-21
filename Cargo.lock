@@ -315,7 +315,7 @@ dependencies = [
  "keccak-asm",
  "paste",
  "proptest",
- "rand 0.9.0",
+ "rand 0.9.1",
  "ruint",
  "rustc-hash 2.1.1",
  "serde",
@@ -1434,9 +1434,9 @@ dependencies = [
 
 [[package]]
 name = "clap"
-version = "4.5.36"
+version = "4.5.37"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "2df961d8c8a0d08aa9945718ccf584145eee3f3aa06cddbeac12933781102e04"
+checksum = "eccb054f56cbd38340b380d4a8e69ef1f02f1af43db2f0cc817a4774d80ae071"
 dependencies = [
  "clap_builder",
  "clap_derive",
@@ -1444,9 +1444,9 @@ dependencies = [
 
 [[package]]
 name = "clap_builder"
-version = "4.5.36"
+version = "4.5.37"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "132dbda40fb6753878316a489d5a1242a8ef2f0d9e47ba01c951ea8aa7d013a5"
+checksum = "efd9466fac8543255d3b1fcad4762c5e116ffe808c8a3043d4263cd4fd4862a2"
 dependencies = [
  "anstream",
  "anstyle",
@@ -1691,9 +1691,9 @@ checksum = "2a2330da5de22e8a3cb63252ce2abb30116bf5265e89c0e01bc17015ce30a476"
 
 [[package]]
 name = "der"
-version = "0.7.9"
+version = "0.7.10"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "f55bf8e7b65898637379c1b74eb1551107c8294ed26d855ceb9fd1a09cfc9bc0"
+checksum = "e7c1832837b905bbfb5101e07cc24c8deddf52f93225eee6ead5f4d63d53ddcb"
 dependencies = [
  "const-oid",
  "zeroize",
@@ -2929,9 +2929,9 @@ dependencies = [
 
 [[package]]
 name = "metrics"
-version = "0.24.1"
+version = "0.24.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "7a7deb012b3b2767169ff203fadb4c6b0b82b947512e5eb9e0b78c2e186ad9e3"
+checksum = "25dea7ac8057892855ec285c440160265225438c3c45072613c25a4b26e98ef5"
 dependencies = [
  "ahash",
  "portable-atomic",
@@ -3694,14 +3694,13 @@ dependencies = [
 
 [[package]]
 name = "rand"
-version = "0.9.0"
+version = "0.9.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "3779b94aeb87e8bd4e834cee3650289ee9e0d5677f976ecdb6d219e5f4f6cd94"
+checksum = "9fbfd9d094a40bf3ae768db9361049ace4c0e04a4fd6b359518bd7b73a73dd97"
 dependencies = [
  "rand_chacha 0.9.0",
  "rand_core 0.9.3",
  "serde",
- "zerocopy 0.8.24",
 ]
 
 [[package]]
@@ -3867,8 +3866,8 @@ dependencies = [
 
 [[package]]
 name = "reth-chain-state"
-version = "1.3.11"
-source = "git+https://github.com/cakevm/reth?branch=tx-pool#294bdd4a7e6fadae01118f4cfc84a0517ca02f2f"
+version = "1.3.12"
+source = "git+https://github.com/cakevm/reth?branch=tx-pool#db56a5bffeff80a5feb0ae03899aed1c21775776"
 dependencies = [
  "alloy-consensus",
  "alloy-eips",
@@ -3893,8 +3892,8 @@ dependencies = [
 
 [[package]]
 name = "reth-chainspec"
-version = "1.3.11"
-source = "git+https://github.com/cakevm/reth?branch=tx-pool#294bdd4a7e6fadae01118f4cfc84a0517ca02f2f"
+version = "1.3.12"
+source = "git+https://github.com/cakevm/reth?branch=tx-pool#db56a5bffeff80a5feb0ae03899aed1c21775776"
 dependencies = [
  "alloy-chains",
  "alloy-consensus",
@@ -3913,8 +3912,8 @@ dependencies = [
 
 [[package]]
 name = "reth-codecs"
-version = "1.3.11"
-source = "git+https://github.com/cakevm/reth?branch=tx-pool#294bdd4a7e6fadae01118f4cfc84a0517ca02f2f"
+version = "1.3.12"
+source = "git+https://github.com/cakevm/reth?branch=tx-pool#db56a5bffeff80a5feb0ae03899aed1c21775776"
 dependencies = [
  "alloy-consensus",
  "alloy-eips",
@@ -3931,8 +3930,8 @@ dependencies = [
 
 [[package]]
 name = "reth-codecs-derive"
-version = "1.3.11"
-source = "git+https://github.com/cakevm/reth?branch=tx-pool#294bdd4a7e6fadae01118f4cfc84a0517ca02f2f"
+version = "1.3.12"
+source = "git+https://github.com/cakevm/reth?branch=tx-pool#db56a5bffeff80a5feb0ae03899aed1c21775776"
 dependencies = [
  "convert_case",
  "proc-macro2",
@@ -3942,8 +3941,8 @@ dependencies = [
 
 [[package]]
 name = "reth-consensus"
-version = "1.3.11"
-source = "git+https://github.com/cakevm/reth?branch=tx-pool#294bdd4a7e6fadae01118f4cfc84a0517ca02f2f"
+version = "1.3.12"
+source = "git+https://github.com/cakevm/reth?branch=tx-pool#db56a5bffeff80a5feb0ae03899aed1c21775776"
 dependencies = [
  "alloy-consensus",
  "alloy-primitives",
@@ -3955,8 +3954,8 @@ dependencies = [
 
 [[package]]
 name = "reth-db"
-version = "1.3.11"
-source = "git+https://github.com/cakevm/reth?branch=tx-pool#294bdd4a7e6fadae01118f4cfc84a0517ca02f2f"
+version = "1.3.12"
+source = "git+https://github.com/cakevm/reth?branch=tx-pool#db56a5bffeff80a5feb0ae03899aed1c21775776"
 dependencies = [
  "alloy-primitives",
  "derive_more",
@@ -3979,8 +3978,8 @@ dependencies = [
 
 [[package]]
 name = "reth-db-api"
-version = "1.3.11"
-source = "git+https://github.com/cakevm/reth?branch=tx-pool#294bdd4a7e6fadae01118f4cfc84a0517ca02f2f"
+version = "1.3.12"
+source = "git+https://github.com/cakevm/reth?branch=tx-pool#db56a5bffeff80a5feb0ae03899aed1c21775776"
 dependencies = [
  "alloy-consensus",
  "alloy-genesis",
@@ -4004,8 +4003,8 @@ dependencies = [
 
 [[package]]
 name = "reth-db-models"
-version = "1.3.11"
-source = "git+https://github.com/cakevm/reth?branch=tx-pool#294bdd4a7e6fadae01118f4cfc84a0517ca02f2f"
+version = "1.3.12"
+source = "git+https://github.com/cakevm/reth?branch=tx-pool#db56a5bffeff80a5feb0ae03899aed1c21775776"
 dependencies = [
  "alloy-eips",
  "alloy-primitives",
@@ -4018,8 +4017,8 @@ dependencies = [
 
 [[package]]
 name = "reth-engine-primitives"
-version = "1.3.11"
-source = "git+https://github.com/cakevm/reth?branch=tx-pool#294bdd4a7e6fadae01118f4cfc84a0517ca02f2f"
+version = "1.3.12"
+source = "git+https://github.com/cakevm/reth?branch=tx-pool#db56a5bffeff80a5feb0ae03899aed1c21775776"
 dependencies = [
  "alloy-consensus",
  "alloy-primitives",
@@ -4042,20 +4041,19 @@ dependencies = [
 
 [[package]]
 name = "reth-errors"
-version = "1.3.11"
-source = "git+https://github.com/cakevm/reth?branch=tx-pool#294bdd4a7e6fadae01118f4cfc84a0517ca02f2f"
+version = "1.3.12"
+source = "git+https://github.com/cakevm/reth?branch=tx-pool#db56a5bffeff80a5feb0ae03899aed1c21775776"
 dependencies = [
  "reth-consensus",
  "reth-execution-errors",
- "reth-fs-util",
  "reth-storage-errors",
  "thiserror 2.0.12",
 ]
 
 [[package]]
 name = "reth-eth-wire-types"
-version = "1.3.11"
-source = "git+https://github.com/cakevm/reth?branch=tx-pool#294bdd4a7e6fadae01118f4cfc84a0517ca02f2f"
+version = "1.3.12"
+source = "git+https://github.com/cakevm/reth?branch=tx-pool#db56a5bffeff80a5feb0ae03899aed1c21775776"
 dependencies = [
  "alloy-chains",
  "alloy-consensus",
@@ -4075,8 +4073,8 @@ dependencies = [
 
 [[package]]
 name = "reth-ethereum-forks"
-version = "1.3.11"
-source = "git+https://github.com/cakevm/reth?branch=tx-pool#294bdd4a7e6fadae01118f4cfc84a0517ca02f2f"
+version = "1.3.12"
+source = "git+https://github.com/cakevm/reth?branch=tx-pool#db56a5bffeff80a5feb0ae03899aed1c21775776"
 dependencies = [
  "alloy-eip2124",
  "alloy-hardforks",
@@ -4088,8 +4086,8 @@ dependencies = [
 
 [[package]]
 name = "reth-ethereum-primitives"
-version = "1.3.11"
-source = "git+https://github.com/cakevm/reth?branch=tx-pool#294bdd4a7e6fadae01118f4cfc84a0517ca02f2f"
+version = "1.3.12"
+source = "git+https://github.com/cakevm/reth?branch=tx-pool#db56a5bffeff80a5feb0ae03899aed1c21775776"
 dependencies = [
  "alloy-consensus",
  "alloy-eips",
@@ -4112,8 +4110,8 @@ dependencies = [
 
 [[package]]
 name = "reth-evm"
-version = "1.3.11"
-source = "git+https://github.com/cakevm/reth?branch=tx-pool#294bdd4a7e6fadae01118f4cfc84a0517ca02f2f"
+version = "1.3.12"
+source = "git+https://github.com/cakevm/reth?branch=tx-pool#db56a5bffeff80a5feb0ae03899aed1c21775776"
 dependencies = [
  "alloy-consensus",
  "alloy-eips",
@@ -4125,7 +4123,6 @@ dependencies = [
  "reth-execution-errors",
  "reth-execution-types",
  "reth-primitives-traits",
- "reth-revm",
  "reth-storage-api",
  "reth-storage-errors",
  "reth-trie-common",
@@ -4134,8 +4131,8 @@ dependencies = [
 
 [[package]]
 name = "reth-execution-errors"
-version = "1.3.11"
-source = "git+https://github.com/cakevm/reth?branch=tx-pool#294bdd4a7e6fadae01118f4cfc84a0517ca02f2f"
+version = "1.3.12"
+source = "git+https://github.com/cakevm/reth?branch=tx-pool#db56a5bffeff80a5feb0ae03899aed1c21775776"
 dependencies = [
  "alloy-evm",
  "alloy-primitives",
@@ -4147,8 +4144,8 @@ dependencies = [
 
 [[package]]
 name = "reth-execution-types"
-version = "1.3.11"
-source = "git+https://github.com/cakevm/reth?branch=tx-pool#294bdd4a7e6fadae01118f4cfc84a0517ca02f2f"
+version = "1.3.12"
+source = "git+https://github.com/cakevm/reth?branch=tx-pool#db56a5bffeff80a5feb0ae03899aed1c21775776"
 dependencies = [
  "alloy-consensus",
  "alloy-eips",
@@ -4165,8 +4162,8 @@ dependencies = [
 
 [[package]]
 name = "reth-fs-util"
-version = "1.3.11"
-source = "git+https://github.com/cakevm/reth?branch=tx-pool#294bdd4a7e6fadae01118f4cfc84a0517ca02f2f"
+version = "1.3.12"
+source = "git+https://github.com/cakevm/reth?branch=tx-pool#db56a5bffeff80a5feb0ae03899aed1c21775776"
 dependencies = [
  "serde",
  "serde_json",
@@ -4175,8 +4172,8 @@ dependencies = [
 
 [[package]]
 name = "reth-libmdbx"
-version = "1.3.11"
-source = "git+https://github.com/cakevm/reth?branch=tx-pool#294bdd4a7e6fadae01118f4cfc84a0517ca02f2f"
+version = "1.3.12"
+source = "git+https://github.com/cakevm/reth?branch=tx-pool#db56a5bffeff80a5feb0ae03899aed1c21775776"
 dependencies = [
  "bitflags 2.9.0",
  "byteorder",
@@ -4192,8 +4189,8 @@ dependencies = [
 
 [[package]]
 name = "reth-mdbx-sys"
-version = "1.3.11"
-source = "git+https://github.com/cakevm/reth?branch=tx-pool#294bdd4a7e6fadae01118f4cfc84a0517ca02f2f"
+version = "1.3.12"
+source = "git+https://github.com/cakevm/reth?branch=tx-pool#db56a5bffeff80a5feb0ae03899aed1c21775776"
 dependencies = [
  "bindgen",
  "cc",
@@ -4201,8 +4198,8 @@ dependencies = [
 
 [[package]]
 name = "reth-metrics"
-version = "1.3.11"
-source = "git+https://github.com/cakevm/reth?branch=tx-pool#294bdd4a7e6fadae01118f4cfc84a0517ca02f2f"
+version = "1.3.12"
+source = "git+https://github.com/cakevm/reth?branch=tx-pool#db56a5bffeff80a5feb0ae03899aed1c21775776"
 dependencies = [
  "metrics",
  "metrics-derive",
@@ -4210,16 +4207,16 @@ dependencies = [
 
 [[package]]
 name = "reth-net-banlist"
-version = "1.3.11"
-source = "git+https://github.com/cakevm/reth?branch=tx-pool#294bdd4a7e6fadae01118f4cfc84a0517ca02f2f"
+version = "1.3.12"
+source = "git+https://github.com/cakevm/reth?branch=tx-pool#db56a5bffeff80a5feb0ae03899aed1c21775776"
 dependencies = [
  "alloy-primitives",
 ]
 
 [[package]]
 name = "reth-network-p2p"
-version = "1.3.11"
-source = "git+https://github.com/cakevm/reth?branch=tx-pool#294bdd4a7e6fadae01118f4cfc84a0517ca02f2f"
+version = "1.3.12"
+source = "git+https://github.com/cakevm/reth?branch=tx-pool#db56a5bffeff80a5feb0ae03899aed1c21775776"
 dependencies = [
  "alloy-consensus",
  "alloy-eips",
@@ -4240,8 +4237,8 @@ dependencies = [
 
 [[package]]
 name = "reth-network-peers"
-version = "1.3.11"
-source = "git+https://github.com/cakevm/reth?branch=tx-pool#294bdd4a7e6fadae01118f4cfc84a0517ca02f2f"
+version = "1.3.12"
+source = "git+https://github.com/cakevm/reth?branch=tx-pool#db56a5bffeff80a5feb0ae03899aed1c21775776"
 dependencies = [
  "alloy-primitives",
  "alloy-rlp",
@@ -4253,8 +4250,8 @@ dependencies = [
 
 [[package]]
 name = "reth-network-types"
-version = "1.3.11"
-source = "git+https://github.com/cakevm/reth?branch=tx-pool#294bdd4a7e6fadae01118f4cfc84a0517ca02f2f"
+version = "1.3.12"
+source = "git+https://github.com/cakevm/reth?branch=tx-pool#db56a5bffeff80a5feb0ae03899aed1c21775776"
 dependencies = [
  "alloy-eip2124",
  "reth-net-banlist",
@@ -4265,8 +4262,8 @@ dependencies = [
 
 [[package]]
 name = "reth-nippy-jar"
-version = "1.3.11"
-source = "git+https://github.com/cakevm/reth?branch=tx-pool#294bdd4a7e6fadae01118f4cfc84a0517ca02f2f"
+version = "1.3.12"
+source = "git+https://github.com/cakevm/reth?branch=tx-pool#db56a5bffeff80a5feb0ae03899aed1c21775776"
 dependencies = [
  "anyhow",
  "bincode",
@@ -4282,8 +4279,8 @@ dependencies = [
 
 [[package]]
 name = "reth-node-types"
-version = "1.3.11"
-source = "git+https://github.com/cakevm/reth?branch=tx-pool#294bdd4a7e6fadae01118f4cfc84a0517ca02f2f"
+version = "1.3.12"
+source = "git+https://github.com/cakevm/reth?branch=tx-pool#db56a5bffeff80a5feb0ae03899aed1c21775776"
 dependencies = [
  "reth-chainspec",
  "reth-db-api",
@@ -4295,8 +4292,8 @@ dependencies = [
 
 [[package]]
 name = "reth-optimism-chainspec"
-version = "1.3.11"
-source = "git+https://github.com/cakevm/reth?branch=tx-pool#294bdd4a7e6fadae01118f4cfc84a0517ca02f2f"
+version = "1.3.12"
+source = "git+https://github.com/cakevm/reth?branch=tx-pool#db56a5bffeff80a5feb0ae03899aed1c21775776"
 dependencies = [
  "alloy-chains",
  "alloy-consensus",
@@ -4317,8 +4314,8 @@ dependencies = [
 
 [[package]]
 name = "reth-optimism-forks"
-version = "1.3.11"
-source = "git+https://github.com/cakevm/reth?branch=tx-pool#294bdd4a7e6fadae01118f4cfc84a0517ca02f2f"
+version = "1.3.12"
+source = "git+https://github.com/cakevm/reth?branch=tx-pool#db56a5bffeff80a5feb0ae03899aed1c21775776"
 dependencies = [
  "alloy-op-hardforks",
  "alloy-primitives",
@@ -4328,10 +4325,11 @@ dependencies = [
 
 [[package]]
 name = "reth-optimism-primitives"
-version = "1.3.11"
-source = "git+https://github.com/cakevm/reth?branch=tx-pool#294bdd4a7e6fadae01118f4cfc84a0517ca02f2f"
+version = "1.3.12"
+source = "git+https://github.com/cakevm/reth?branch=tx-pool#db56a5bffeff80a5feb0ae03899aed1c21775776"
 dependencies = [
  "alloy-consensus",
+ "alloy-eips",
  "alloy-primitives",
  "alloy-rlp",
  "bytes",
@@ -4346,8 +4344,8 @@ dependencies = [
 
 [[package]]
 name = "reth-payload-builder-primitives"
-version = "1.3.11"
-source = "git+https://github.com/cakevm/reth?branch=tx-pool#294bdd4a7e6fadae01118f4cfc84a0517ca02f2f"
+version = "1.3.12"
+source = "git+https://github.com/cakevm/reth?branch=tx-pool#db56a5bffeff80a5feb0ae03899aed1c21775776"
 dependencies = [
  "pin-project",
  "reth-payload-primitives",
@@ -4358,8 +4356,8 @@ dependencies = [
 
 [[package]]
 name = "reth-payload-primitives"
-version = "1.3.11"
-source = "git+https://github.com/cakevm/reth?branch=tx-pool#294bdd4a7e6fadae01118f4cfc84a0517ca02f2f"
+version = "1.3.12"
+source = "git+https://github.com/cakevm/reth?branch=tx-pool#db56a5bffeff80a5feb0ae03899aed1c21775776"
 dependencies = [
  "alloy-eips",
  "alloy-primitives",
@@ -4377,8 +4375,8 @@ dependencies = [
 
 [[package]]
 name = "reth-primitives"
-version = "1.3.11"
-source = "git+https://github.com/cakevm/reth?branch=tx-pool#294bdd4a7e6fadae01118f4cfc84a0517ca02f2f"
+version = "1.3.12"
+source = "git+https://github.com/cakevm/reth?branch=tx-pool#db56a5bffeff80a5feb0ae03899aed1c21775776"
 dependencies = [
  "alloy-consensus",
  "once_cell",
@@ -4390,8 +4388,8 @@ dependencies = [
 
 [[package]]
 name = "reth-primitives-traits"
-version = "1.3.11"
-source = "git+https://github.com/cakevm/reth?branch=tx-pool#294bdd4a7e6fadae01118f4cfc84a0517ca02f2f"
+version = "1.3.12"
+source = "git+https://github.com/cakevm/reth?branch=tx-pool#db56a5bffeff80a5feb0ae03899aed1c21775776"
 dependencies = [
  "alloy-consensus",
  "alloy-eips",
@@ -4419,8 +4417,8 @@ dependencies = [
 
 [[package]]
 name = "reth-provider"
-version = "1.3.11"
-source = "git+https://github.com/cakevm/reth?branch=tx-pool#294bdd4a7e6fadae01118f4cfc84a0517ca02f2f"
+version = "1.3.12"
+source = "git+https://github.com/cakevm/reth?branch=tx-pool#db56a5bffeff80a5feb0ae03899aed1c21775776"
 dependencies = [
  "alloy-consensus",
  "alloy-eips",
@@ -4464,8 +4462,8 @@ dependencies = [
 
 [[package]]
 name = "reth-prune-types"
-version = "1.3.11"
-source = "git+https://github.com/cakevm/reth?branch=tx-pool#294bdd4a7e6fadae01118f4cfc84a0517ca02f2f"
+version = "1.3.12"
+source = "git+https://github.com/cakevm/reth?branch=tx-pool#db56a5bffeff80a5feb0ae03899aed1c21775776"
 dependencies = [
  "alloy-primitives",
  "derive_more",
@@ -4477,8 +4475,8 @@ dependencies = [
 
 [[package]]
 name = "reth-revm"
-version = "1.3.11"
-source = "git+https://github.com/cakevm/reth?branch=tx-pool#294bdd4a7e6fadae01118f4cfc84a0517ca02f2f"
+version = "1.3.12"
+source = "git+https://github.com/cakevm/reth?branch=tx-pool#db56a5bffeff80a5feb0ae03899aed1c21775776"
 dependencies = [
  "alloy-primitives",
  "reth-primitives-traits",
@@ -4489,8 +4487,8 @@ dependencies = [
 
 [[package]]
 name = "reth-stages-types"
-version = "1.3.11"
-source = "git+https://github.com/cakevm/reth?branch=tx-pool#294bdd4a7e6fadae01118f4cfc84a0517ca02f2f"
+version = "1.3.12"
+source = "git+https://github.com/cakevm/reth?branch=tx-pool#db56a5bffeff80a5feb0ae03899aed1c21775776"
 dependencies = [
  "alloy-primitives",
  "bytes",
@@ -4502,8 +4500,8 @@ dependencies = [
 
 [[package]]
 name = "reth-static-file-types"
-version = "1.3.11"
-source = "git+https://github.com/cakevm/reth?branch=tx-pool#294bdd4a7e6fadae01118f4cfc84a0517ca02f2f"
+version = "1.3.12"
+source = "git+https://github.com/cakevm/reth?branch=tx-pool#db56a5bffeff80a5feb0ae03899aed1c21775776"
 dependencies = [
  "alloy-primitives",
  "derive_more",
@@ -4513,8 +4511,8 @@ dependencies = [
 
 [[package]]
 name = "reth-storage-api"
-version = "1.3.11"
-source = "git+https://github.com/cakevm/reth?branch=tx-pool#294bdd4a7e6fadae01118f4cfc84a0517ca02f2f"
+version = "1.3.12"
+source = "git+https://github.com/cakevm/reth?branch=tx-pool#db56a5bffeff80a5feb0ae03899aed1c21775776"
 dependencies = [
  "alloy-consensus",
  "alloy-eips",
@@ -4537,8 +4535,8 @@ dependencies = [
 
 [[package]]
 name = "reth-storage-errors"
-version = "1.3.11"
-source = "git+https://github.com/cakevm/reth?branch=tx-pool#294bdd4a7e6fadae01118f4cfc84a0517ca02f2f"
+version = "1.3.12"
+source = "git+https://github.com/cakevm/reth?branch=tx-pool#db56a5bffeff80a5feb0ae03899aed1c21775776"
 dependencies = [
  "alloy-eips",
  "alloy-primitives",
@@ -4553,8 +4551,8 @@ dependencies = [
 
 [[package]]
 name = "reth-tasks"
-version = "1.3.11"
-source = "git+https://github.com/cakevm/reth?branch=tx-pool#294bdd4a7e6fadae01118f4cfc84a0517ca02f2f"
+version = "1.3.12"
+source = "git+https://github.com/cakevm/reth?branch=tx-pool#db56a5bffeff80a5feb0ae03899aed1c21775776"
 dependencies = [
  "auto_impl",
  "dyn-clone",
@@ -4569,8 +4567,8 @@ dependencies = [
 
 [[package]]
 name = "reth-tracing"
-version = "1.3.11"
-source = "git+https://github.com/cakevm/reth?branch=tx-pool#294bdd4a7e6fadae01118f4cfc84a0517ca02f2f"
+version = "1.3.12"
+source = "git+https://github.com/cakevm/reth?branch=tx-pool#db56a5bffeff80a5feb0ae03899aed1c21775776"
 dependencies = [
  "clap",
  "eyre",
@@ -4584,8 +4582,8 @@ dependencies = [
 
 [[package]]
 name = "reth-transaction-pool"
-version = "1.3.11"
-source = "git+https://github.com/cakevm/reth?branch=tx-pool#294bdd4a7e6fadae01118f4cfc84a0517ca02f2f"
+version = "1.3.12"
+source = "git+https://github.com/cakevm/reth?branch=tx-pool#db56a5bffeff80a5feb0ae03899aed1c21775776"
 dependencies = [
  "alloy-consensus",
  "alloy-eips",
@@ -4620,8 +4618,8 @@ dependencies = [
 
 [[package]]
 name = "reth-trie"
-version = "1.3.11"
-source = "git+https://github.com/cakevm/reth?branch=tx-pool#294bdd4a7e6fadae01118f4cfc84a0517ca02f2f"
+version = "1.3.12"
+source = "git+https://github.com/cakevm/reth?branch=tx-pool#db56a5bffeff80a5feb0ae03899aed1c21775776"
 dependencies = [
  "alloy-consensus",
  "alloy-eips",
@@ -4644,8 +4642,8 @@ dependencies = [
 
 [[package]]
 name = "reth-trie-common"
-version = "1.3.11"
-source = "git+https://github.com/cakevm/reth?branch=tx-pool#294bdd4a7e6fadae01118f4cfc84a0517ca02f2f"
+version = "1.3.12"
+source = "git+https://github.com/cakevm/reth?branch=tx-pool#db56a5bffeff80a5feb0ae03899aed1c21775776"
 dependencies = [
  "alloy-consensus",
  "alloy-primitives",
@@ -4667,8 +4665,8 @@ dependencies = [
 
 [[package]]
 name = "reth-trie-db"
-version = "1.3.11"
-source = "git+https://github.com/cakevm/reth?branch=tx-pool#294bdd4a7e6fadae01118f4cfc84a0517ca02f2f"
+version = "1.3.12"
+source = "git+https://github.com/cakevm/reth?branch=tx-pool#db56a5bffeff80a5feb0ae03899aed1c21775776"
 dependencies = [
  "alloy-primitives",
  "reth-db-api",
@@ -4680,8 +4678,8 @@ dependencies = [
 
 [[package]]
 name = "reth-trie-sparse"
-version = "1.3.11"
-source = "git+https://github.com/cakevm/reth?branch=tx-pool#294bdd4a7e6fadae01118f4cfc84a0517ca02f2f"
+version = "1.3.12"
+source = "git+https://github.com/cakevm/reth?branch=tx-pool#db56a5bffeff80a5feb0ae03899aed1c21775776"
 dependencies = [
  "alloy-primitives",
  "alloy-rlp",
@@ -4697,8 +4695,8 @@ dependencies = [
 
 [[package]]
 name = "reth-zstd-compressors"
-version = "1.3.11"
-source = "git+https://github.com/cakevm/reth?branch=tx-pool#294bdd4a7e6fadae01118f4cfc84a0517ca02f2f"
+version = "1.3.12"
+source = "git+https://github.com/cakevm/reth?branch=tx-pool#db56a5bffeff80a5feb0ae03899aed1c21775776"
 dependencies = [
  "zstd",
 ]
@@ -4970,7 +4968,7 @@ dependencies = [
  "primitive-types",
  "proptest",
  "rand 0.8.5",
- "rand 0.9.0",
+ "rand 0.9.1",
  "rlp",
  "ruint-macro",
  "serde",
@@ -5962,7 +5960,7 @@ dependencies = [
  "http",
  "httparse",
  "log",
- "rand 0.9.0",
+ "rand 0.9.1",
  "rustls",
  "rustls-pki-types",
  "sha1",
