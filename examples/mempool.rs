@@ -17,7 +17,7 @@ use reth_ethereum_primitives::{EthPrimitives, TransactionSigned};
 #[cfg(not(feature = "optimism"))]
 use reth_primitives::{BlockBody, SealedBlock};
 #[cfg(not(feature = "optimism"))]
-use reth_primitives_traits::{RecoveredBlock, SealedHeader, SignedTransaction};
+use reth_primitives_traits::{RecoveredBlock, SealedHeader};
 #[cfg(not(feature = "optimism"))]
 use reth_provider::{BlockNumReader, BlockReader, CanonStateNotification, CanonStateSubscriptions, Chain, ExecutionOutcome};
 #[cfg(not(feature = "optimism"))]
