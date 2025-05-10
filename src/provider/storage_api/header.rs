@@ -9,13 +9,14 @@ use reth_errors::{ProviderError, ProviderResult};
 use reth_primitives::SealedHeader;
 use reth_provider::errors::any::AnyError;
 use reth_provider::HeaderProvider;
+use std::fmt::Debug;
 use std::future::IntoFuture;
 use std::ops::RangeBounds;
 use tokio::runtime::Handle;
 
 impl<P, NP> HeaderProvider for AlloyRethProvider<P, NP>
 where
-    P: 'static + Clone + Provider<AlloyNetwork> + Send + Sync,
+    P: 'static + Clone + Provider<AlloyNetwork> + Debug + Send + Sync,
     NP: AlloyRethNodePrimitives,
 {
     type Header = NP::BlockHeader;

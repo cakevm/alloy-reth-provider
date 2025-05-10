@@ -6,11 +6,12 @@ use alloy_provider::Provider;
 use reth_errors::ProviderResult;
 use reth_primitives::Receipt;
 use reth_provider::{ReceiptProvider, ReceiptProviderIdExt};
+use std::fmt::Debug;
 use std::ops::RangeBounds;
 
 impl<P, NP> ReceiptProvider for AlloyRethProvider<P, NP>
 where
-    P: 'static + Clone + Provider<AlloyNetwork> + Send + Sync,
+    P: 'static + Clone + Provider<AlloyNetwork> + Debug + Send + Sync,
     NP: AlloyRethNodePrimitives,
 {
     type Receipt = reth_primitives::Receipt;
@@ -35,6 +36,6 @@ where
 impl<P, NP> ReceiptProviderIdExt for AlloyRethProvider<P, NP>
 where
     NP: AlloyRethNodePrimitives,
-    P: 'static + Clone + Provider<AlloyNetwork> + Send + Sync,
+    P: 'static + Clone + Provider<AlloyNetwork> + Debug + Send + Sync,
 {
 }

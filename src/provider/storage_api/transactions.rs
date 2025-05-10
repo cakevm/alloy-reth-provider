@@ -6,11 +6,12 @@ use alloy_primitives::{Address, BlockNumber, TxHash, TxNumber};
 use alloy_provider::Provider;
 use reth_errors::ProviderResult;
 use reth_provider::TransactionsProvider;
+use std::fmt::Debug;
 use std::ops::RangeBounds;
 
 impl<P, NP> TransactionsProvider for AlloyRethProvider<P, NP>
 where
-    P: 'static + Clone + Provider<AlloyNetwork> + Send + Sync,
+    P: 'static + Clone + Provider<AlloyNetwork> + Debug + Send + Sync,
     NP: AlloyRethNodePrimitives,
 {
     type Transaction = NP::SignedTx;

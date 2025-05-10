@@ -9,12 +9,13 @@ use alloy_provider::Provider;
 use reth_errors::{ProviderError, ProviderResult};
 use reth_provider::errors::any::AnyError;
 use reth_provider::{BlockIdReader, BlockNumReader};
+use std::fmt::Debug;
 use std::future::IntoFuture;
 use tokio::runtime::Handle;
 
 impl<P, NP> BlockNumReader for AlloyRethProvider<P, NP>
 where
-    P: Provider<AlloyNetwork> + Send + Sync + Clone + 'static,
+    P: Provider<AlloyNetwork> + Send + Sync + Debug + Clone + 'static,
     NP: AlloyRethNodePrimitives,
 {
     fn chain_info(&self) -> ProviderResult<reth_chainspec::ChainInfo> {
@@ -54,7 +55,7 @@ where
 
 impl<P, NP> BlockIdReader for AlloyRethProvider<P, NP>
 where
-    P: Provider<AlloyNetwork> + Send + Sync + Clone + 'static,
+    P: Provider<AlloyNetwork> + Send + Sync + Debug + Clone + 'static,
     NP: AlloyRethNodePrimitives,
 {
     fn pending_block_num_hash(&self) -> ProviderResult<Option<alloy_eips::BlockNumHash>> {

@@ -1,31 +1,22 @@
 #[cfg(not(feature = "optimism"))]
-use alloy_eips::BlockId;
+mod eth_imports {
+    pub use alloy_eips::BlockId;
+    pub use alloy_primitives::utils::parse_units;
+    pub use alloy_primitives::{address, Bytes, B256, U256};
+    pub use alloy_provider::ProviderBuilder;
+    pub use alloy_reth_provider::AlloyRethProvider;
+    pub use reth_ethereum_primitives::EthPrimitives;
+    pub use reth_provider::StateProviderFactory;
+    pub use reth_revm::database::StateProviderDatabase;
+    pub use reth_revm::{ExecuteEvm, MainBuilder, MainContext};
+    pub use revm::handler::EthPrecompiles;
+    pub use revm::inspector::NoOpInspector;
+    pub use revm_context::result::ResultAndState;
+    pub use revm_context::{BlockEnv, Context, Evm, TransactTo, TxEnv};
+    pub use std::str::FromStr;
+}
 #[cfg(not(feature = "optimism"))]
-use alloy_primitives::utils::parse_units;
-#[cfg(not(feature = "optimism"))]
-use alloy_primitives::{address, Bytes, B256, U256};
-#[cfg(not(feature = "optimism"))]
-use alloy_provider::ProviderBuilder;
-#[cfg(not(feature = "optimism"))]
-use alloy_reth_provider::AlloyRethProvider;
-#[cfg(not(feature = "optimism"))]
-use reth_ethereum_primitives::EthPrimitives;
-#[cfg(not(feature = "optimism"))]
-use reth_provider::StateProviderFactory;
-#[cfg(not(feature = "optimism"))]
-use reth_revm::database::StateProviderDatabase;
-#[cfg(not(feature = "optimism"))]
-use reth_revm::{ExecuteEvm, MainBuilder, MainContext};
-#[cfg(not(feature = "optimism"))]
-use revm::handler::EthPrecompiles;
-#[cfg(not(feature = "optimism"))]
-use revm::inspector::NoOpInspector;
-#[cfg(not(feature = "optimism"))]
-use revm_context::result::ResultAndState;
-#[cfg(not(feature = "optimism"))]
-use revm_context::{BlockEnv, Context, Evm, TransactTo, TxEnv};
-#[cfg(not(feature = "optimism"))]
-use std::str::FromStr;
+use eth_imports::*;
 
 #[cfg(feature = "optimism")]
 fn main() {

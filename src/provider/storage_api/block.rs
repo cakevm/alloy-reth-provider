@@ -10,13 +10,14 @@ use reth_primitives::{BlockBody, RecoveredBlock, SealedBlock};
 use reth_primitives_traits::{Block, SealedHeader};
 use reth_provider::errors::any::AnyError;
 use reth_provider::{BlockReader, BlockReaderIdExt, BlockSource, TransactionVariant};
+use std::fmt::Debug;
 use std::future::IntoFuture;
 use std::ops::RangeInclusive;
 use tokio::runtime::Handle;
 
 impl<P, NP> BlockReader for AlloyRethProvider<P, NP>
 where
-    P: Provider<AlloyNetwork> + Send + Sync + Clone + 'static,
+    P: Provider<AlloyNetwork> + Send + Sync + Debug + Clone + 'static,
     NP: AlloyRethNodePrimitives,
 {
     type Block = NP::Block;
@@ -110,6 +111,14 @@ where
         todo!()
     }
 
+    fn recovered_block(
+        &self,
+        _id: BlockHashOrNumber,
+        _transaction_kind: TransactionVariant,
+    ) -> ProviderResult<Option<RecoveredBlock<Self::Block>>> {
+        todo!()
+    }
+
     fn sealed_block_with_senders(
         &self,
         _id: BlockHashOrNumber,
@@ -126,14 +135,6 @@ where
         todo!()
     }
 
-    fn recovered_block(
-        &self,
-        _id: BlockHashOrNumber,
-        _transaction_kind: TransactionVariant,
-    ) -> ProviderResult<Option<RecoveredBlock<Self::Block>>> {
-        todo!()
-    }
-
     fn recovered_block_range(&self, _range: RangeInclusive<BlockNumber>) -> ProviderResult<Vec<RecoveredBlock<Self::Block>>> {
         todo!()
     }
@@ -141,7 +142,7 @@ where
 
 impl<P, NP> BlockReaderIdExt for AlloyRethProvider<P, NP>
 where
-    P: Provider<AlloyNetwork> + Send + Sync + Clone + 'static,
+    P: Provider<AlloyNetwork> + Send + Sync + Debug + Clone + 'static,
     NP: AlloyRethNodePrimitives,
 {
     fn block_by_id(&self, _id: BlockId) -> ProviderResult<Option<Self::Block>> {

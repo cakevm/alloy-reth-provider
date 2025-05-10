@@ -5,10 +5,11 @@ use alloy_eips::BlockHashOrNumber;
 use alloy_provider::Provider;
 use reth_errors::ProviderResult;
 use reth_provider::WithdrawalsProvider;
+use std::fmt::Debug;
 
 impl<P, NP> WithdrawalsProvider for AlloyRethProvider<P, NP>
 where
-    P: 'static + Clone + Provider<AlloyNetwork> + Send + Sync,
+    P: 'static + Clone + Provider<AlloyNetwork> + Debug + Send + Sync,
     NP: AlloyRethNodePrimitives,
 {
     fn withdrawals_by_block(&self, _id: BlockHashOrNumber, _timestamp: u64) -> ProviderResult<Option<Withdrawals>> {

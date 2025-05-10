@@ -5,11 +5,12 @@ use alloy_provider::Provider;
 use reth_db_models::StoredBlockBodyIndices;
 use reth_errors::ProviderResult;
 use reth_provider::BlockBodyIndicesProvider;
+use std::fmt::Debug;
 use std::ops::RangeInclusive;
 
 impl<P, NP> BlockBodyIndicesProvider for AlloyRethProvider<P, NP>
 where
-    P: 'static + Clone + Provider<AlloyNetwork> + Send + Sync,
+    P: 'static + Clone + Provider<AlloyNetwork> + Debug + Send + Sync,
     NP: AlloyRethNodePrimitives,
 {
     fn block_body_indices(&self, _num: u64) -> ProviderResult<Option<StoredBlockBodyIndices>> {

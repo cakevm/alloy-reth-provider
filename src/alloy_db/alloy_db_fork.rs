@@ -104,11 +104,12 @@ mod tests {
     use crate::alloy_db::WrapDatabaseAsync;
     use alloy_provider::ProviderBuilder;
     use revm_database::DatabaseRef;
+    use std::env;
 
-    #[test]
-    #[ignore = "flaky RPC"]
-    fn can_get_basic() {
-        let client = ProviderBuilder::new().connect_http("https://mainnet.infura.io/v3/c60b0bb42f8a4c6481ecd229eddaca27".parse().unwrap());
+    #[tokio::test(flavor = "multi_thread", worker_threads = 1)]
+    async fn can_get_basic() {
+        let node_url = env::var("MAINNET_HTTP").unwrap_or("https://eth.merkle.io".to_string());
+        let client = ProviderBuilder::new().connect_http(node_url.parse().unwrap());
         let alloydb = AlloyDBFork::new(client, BlockId::from(16148323));
         let wrapped_alloydb = WrapDatabaseAsync::new(alloydb).unwrap();
 

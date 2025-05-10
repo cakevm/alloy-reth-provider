@@ -1,41 +1,30 @@
 #[cfg(not(feature = "optimism"))]
-use alloy_consensus::transaction::PooledTransaction;
+mod eth_imports {
+    pub use alloy_consensus::transaction::PooledTransaction;
+    pub use alloy_eips::eip4844::env_settings::EnvKzgSettings;
+    pub use alloy_eips::{Decodable2718, Encodable2718};
+    pub use alloy_provider::{Provider, ProviderBuilder, WsConnect};
+    pub use alloy_reth_provider::AlloyRethProvider;
+    pub use eyre::eyre;
+    pub use futures_util::stream::StreamExt;
+    pub use reth_ethereum_primitives::{EthPrimitives, TransactionSigned};
+    pub use reth_primitives::{BlockBody, SealedBlock};
+    pub use reth_primitives_traits::{RecoveredBlock, SealedHeader};
+    pub use reth_provider::StateReader;
+    pub use reth_provider::{BlockNumReader, BlockReader, CanonStateNotification, CanonStateSubscriptions, Chain};
+    pub use reth_transaction_pool::blobstore::InMemoryBlobStore;
+    pub use reth_transaction_pool::{
+        CoinbaseTipOrdering, EthPooledTransaction, PoolTransaction, TransactionPool, TransactionValidationTaskExecutor,
+    };
+    pub use std::future::pending;
+    pub use std::sync::Arc;
+    pub use tracing_subscriber::layer::SubscriberExt;
+    pub use tracing_subscriber::util::SubscriberInitExt;
+    pub use tracing_subscriber::{fmt, EnvFilter};
+}
+
 #[cfg(not(feature = "optimism"))]
-use alloy_eips::eip4844::env_settings::EnvKzgSettings;
-#[cfg(not(feature = "optimism"))]
-use alloy_eips::{Decodable2718, Encodable2718};
-#[cfg(not(feature = "optimism"))]
-use alloy_provider::{Provider, ProviderBuilder, WsConnect};
-#[cfg(not(feature = "optimism"))]
-use alloy_reth_provider::AlloyRethProvider;
-#[cfg(not(feature = "optimism"))]
-use eyre::eyre;
-#[cfg(not(feature = "optimism"))]
-use futures_util::stream::StreamExt;
-#[cfg(not(feature = "optimism"))]
-use reth_ethereum_primitives::{EthPrimitives, TransactionSigned};
-#[cfg(not(feature = "optimism"))]
-use reth_primitives::{BlockBody, SealedBlock};
-#[cfg(not(feature = "optimism"))]
-use reth_primitives_traits::{RecoveredBlock, SealedHeader};
-#[cfg(not(feature = "optimism"))]
-use reth_provider::{BlockNumReader, BlockReader, CanonStateNotification, CanonStateSubscriptions, Chain, ExecutionOutcome};
-#[cfg(not(feature = "optimism"))]
-use reth_transaction_pool::blobstore::InMemoryBlobStore;
-#[cfg(not(feature = "optimism"))]
-use reth_transaction_pool::{
-    CoinbaseTipOrdering, EthPooledTransaction, PoolTransaction, TransactionPool, TransactionValidationTaskExecutor,
-};
-#[cfg(not(feature = "optimism"))]
-use std::future::pending;
-#[cfg(not(feature = "optimism"))]
-use std::sync::Arc;
-#[cfg(not(feature = "optimism"))]
-use tracing_subscriber::layer::SubscriberExt;
-#[cfg(not(feature = "optimism"))]
-use tracing_subscriber::util::SubscriberInitExt;
-#[cfg(not(feature = "optimism"))]
-use tracing_subscriber::{fmt, EnvFilter};
+use eth_imports::*;
 
 #[cfg(feature = "optimism")]
 fn main() {
@@ -63,6 +52,8 @@ async fn main() -> eyre::Result<()> {
     let manager = reth_tasks::TaskManager::new(tokio::runtime::Handle::current());
     let executor = manager.executor();
 
+    let reth_provider_clone = reth_provider.clone();
+
     // Spawn a 1. task to listen for new blocks and send them to the canon state
     executor.spawn_critical("new-block-stream", async move {
         let mut stream = block_subscription.into_stream().await.unwrap();
@@ -81,8 +72,8 @@ async fn main() -> eyre::Result<()> {
             let sealed_block = SealedBlock::from_sealed_parts(sealed_header, block_body);
             let recovered_block = RecoveredBlock::try_recover_sealed(sealed_block).unwrap();
 
-            // ExecutionOutcome should be not important for the pool
-            let chain = Chain::new(vec![recovered_block], ExecutionOutcome::default(), None);
+            let execution_outcome = reth_provider_clone.get_state(block.header.number).unwrap().unwrap();
+            let chain = Chain::new(vec![recovered_block], execution_outcome, None);
             let commit = CanonStateNotification::Commit { new: Arc::new(chain.clone()) };
             canon_state_notification_sender.send(commit).unwrap();
         }

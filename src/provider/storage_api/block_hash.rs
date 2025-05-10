@@ -7,12 +7,13 @@ use alloy_provider::Provider;
 use reth_errors::{ProviderError, ProviderResult};
 use reth_provider::errors::any::AnyError;
 use reth_provider::BlockHashReader;
+use std::fmt::Debug;
 use std::future::IntoFuture;
 use tokio::runtime::Handle;
 
 impl<P, NP> BlockHashReader for AlloyRethProvider<P, NP>
 where
-    P: Provider<AlloyNetwork> + Send + Sync + Clone + 'static,
+    P: Provider<AlloyNetwork> + Send + Sync + Debug + Clone + 'static,
     NP: AlloyRethNodePrimitives,
 {
     fn block_hash(&self, number: BlockNumber) -> ProviderResult<Option<B256>> {

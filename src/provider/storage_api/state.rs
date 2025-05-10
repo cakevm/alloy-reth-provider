@@ -1,17 +1,70 @@
 use crate::primitives::AlloyRethNodePrimitives;
 use crate::state_provider::alloy_reth_state_provider::AlloyRethStateProvider;
 use crate::{AlloyNetwork, AlloyRethProvider};
+#[cfg(not(feature = "optimism"))]
+use alloy_consensus::BlockHeader;
+#[cfg(not(feature = "optimism"))]
+use alloy_eips::BlockId;
 use alloy_eips::BlockNumberOrTag;
 use alloy_primitives::{BlockHash, BlockNumber, B256};
 use alloy_provider::Provider;
+#[cfg(not(feature = "optimism"))]
+use reth_chainspec::ChainSpecProvider;
 use reth_errors::{ProviderError, ProviderResult};
+#[cfg(not(feature = "optimism"))]
+use reth_ethereum_primitives::EthPrimitives;
+#[cfg(not(feature = "optimism"))]
+use reth_evm::execute::Executor;
+#[cfg(not(feature = "optimism"))]
+use reth_evm::ConfigureEvm;
+#[cfg(not(feature = "optimism"))]
+use reth_evm_ethereum::EthEvmConfig;
+#[cfg(not(feature = "optimism"))]
+use reth_primitives_traits::SealedBlock;
 use reth_provider::errors::any::AnyError;
 use reth_provider::{BlockHashReader, BlockIdReader, StateProviderBox, StateProviderFactory};
+#[cfg(not(feature = "optimism"))]
+use reth_provider::{BlockReader, ExecutionOutcome, StateReader};
+#[cfg(not(feature = "optimism"))]
+use reth_revm::database::StateProviderDatabase;
+use std::fmt::Debug;
 use tokio::runtime::Handle;
+
+#[cfg(not(feature = "optimism"))]
+impl<P, NP> StateReader for AlloyRethProvider<P, NP>
+where
+    P: Provider<AlloyNetwork> + Send + Sync + Debug + Clone + 'static,
+    NP: AlloyRethNodePrimitives,
+{
+    type Receipt = reth_ethereum_primitives::Receipt;
+
+    fn get_state(&self, block_number: BlockNumber) -> ProviderResult<Option<ExecutionOutcome<Self::Receipt>>> {
+        let result = self.block_by_number(block_number)?;
+        match result {
+            Some(block) => {
+                let sealed = SealedBlock::from(block);
+                let provider = AlloyRethProvider::new(self.provider.clone(), EthPrimitives::default());
+                // get state for the previous block
+                let state_provider = provider.state_by_block_id(BlockId::number(block_number - 1))?;
+
+                let db = StateProviderDatabase::new(&state_provider);
+
+                let evm_config = EthEvmConfig::ethereum(provider.chain_spec());
+                let executor = evm_config.batch_executor(db);
+                let block_execution_output =
+                    executor.execute(&sealed.clone().try_recover().map_err(ProviderError::other)?).map_err(ProviderError::other)?;
+                let execution_outcome = ExecutionOutcome::from((block_execution_output, sealed.number()));
+
+                Ok(Some(execution_outcome))
+            }
+            None => Err(ProviderError::BlockBodyIndicesNotFound(block_number)),
+        }
+    }
+}
 
 impl<P, NP> StateProviderFactory for AlloyRethProvider<P, NP>
 where
-    P: Provider<AlloyNetwork> + Send + Sync + Clone + 'static,
+    P: Provider<AlloyNetwork> + Send + Sync + Debug + Clone + 'static,
     NP: AlloyRethNodePrimitives,
 {
     fn latest(&self) -> ProviderResult<StateProviderBox> {
@@ -82,9 +135,24 @@ mod tests {
     use alloy_primitives::address;
     use alloy_provider::ProviderBuilder;
     use reth_ethereum_primitives::EthPrimitives;
-    use reth_provider::StateProviderFactory;
+    use reth_provider::{StateProviderFactory, StateReader};
     use ruint::uint;
     use std::env;
+
+    // Test involves a lot of requests so test only when node is provided
+    #[test_with::env(MAINNET_HTTP)]
+    #[tokio::test(flavor = "multi_thread", worker_threads = 1)]
+    async fn test_get_state() {
+        let node_url = env::var("MAINNET_HTTP").unwrap();
+        let provider = ProviderBuilder::new().connect_http(node_url.parse().unwrap());
+
+        let db_provider = AlloyRethProvider::new(provider, EthPrimitives::default());
+        let state = db_provider.get_state(16148323).unwrap().unwrap();
+
+        let bundle_account = state.bundle.state.get(&address!("0x677cfeb3aabf8f58dee20d798cd4c2c1caef7c56")).unwrap();
+        assert_eq!(bundle_account.original_info.as_ref().unwrap().balance, uint!(463708014023642423_U256));
+        assert_eq!(bundle_account.info.as_ref().unwrap().balance, uint!(500708014023642423_U256));
+    }
 
     #[tokio::test(flavor = "multi_thread", worker_threads = 1)]
     async fn test_state_provider_factory_state_by_block_id() {
