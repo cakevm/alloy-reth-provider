@@ -15,8 +15,6 @@ jobs:
     name: make test
     runs-on: ubuntu-latest
     timeout-minutes: 20
-    env:
-      MAINNET_HTTP: ${{ secrets.MAINNET_HTTP }}
     steps:
       - uses: actions/checkout@v4
         with:
