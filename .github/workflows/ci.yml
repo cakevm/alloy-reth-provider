@@ -17,7 +17,7 @@ jobs:
     timeout-minutes: 20
     env:
       MAINNET_HTTP: ${{ secrets.MAINNET_HTTP }}
-      SKIP_RPC_HEAVY_TESTS: "true"
+      SKIP_RPC_HEAVY_TESTS: true
     steps:
       - uses: actions/checkout@v4
         with:
@@ -25,6 +25,8 @@ jobs:
           ref: ${{ github.event.pull_request.head.sha || github.ref }}
       - uses: dtolnay/rust-toolchain@stable
       - uses: Swatinem/rust-cache@v2
+        with:
+          cache-on-failure: true
       - uses: foundry-rs/foundry-toolchain@v1
       - run: make test
 
@@ -76,6 +78,8 @@ jobs:
         with:
           components: clippy
       - uses: Swatinem/rust-cache@v2
+        with:
+          cache-on-failure: true
       - run: make clippy
 
   deny:
