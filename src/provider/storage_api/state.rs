@@ -139,8 +139,7 @@ mod tests {
     use ruint::uint;
     use std::env;
 
-    // Test involves a lot of requests so test only when node is provided
-    #[test_with::env(MAINNET_HTTP)]
+    #[test_with::no_env(SKIP_RPC_HEAVY_TESTS)]
     #[tokio::test(flavor = "multi_thread", worker_threads = 1)]
     async fn test_get_state() {
         let node_url = env::var("MAINNET_HTTP").unwrap();
