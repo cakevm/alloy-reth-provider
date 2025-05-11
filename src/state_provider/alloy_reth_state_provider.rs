@@ -7,7 +7,7 @@ use alloy_provider::Provider;
 use parking_lot::RwLock;
 use reth_primitives::Bytecode;
 use std::marker::PhantomData;
-use tokio::runtime::Runtime;
+use tokio::runtime::{Handle, Runtime};
 
 pub struct AlloyRethStateProvider<N: Network, P: Provider<N> + Clone> {
     rt: Option<Runtime>,
@@ -18,10 +18,19 @@ pub struct AlloyRethStateProvider<N: Network, P: Provider<N> + Clone> {
 
 impl<N: Network, P: Provider<N> + Clone> AlloyRethStateProvider<N, P> {
     pub fn new(provider: P, block_id: BlockId) -> Self {
-        let rt = Runtime::new().unwrap();
+        let (handle, runtime) = match Handle::try_current() {
+            // If we are already in a tokio runtime, use the current handle
+            Ok(handle) => (handle, None),
+            // If we are not in a tokio runtime, create a new one
+            Err(_) => {
+                let runtime = Runtime::new().unwrap();
+                let handle = runtime.handle().clone();
+                (handle, Some(runtime))
+            }
+        };
         let alloy_db = AlloyDBFork::new(provider.clone(), block_id);
-        let wrapped_db = WrapDatabaseAsync::with_handle(alloy_db, rt.handle().clone());
-        Self { rt: Some(rt), alloy_db: wrapped_db, bytecode: RwLock::new(HashMap::default()), _n: PhantomData }
+        let wrapped_db = WrapDatabaseAsync::with_handle(alloy_db, handle);
+        Self { rt: runtime, alloy_db: wrapped_db, bytecode: RwLock::new(HashMap::default()), _n: PhantomData }
     }
 }
 
