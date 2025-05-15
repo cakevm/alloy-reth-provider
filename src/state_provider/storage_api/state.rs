@@ -49,6 +49,7 @@ where
     }
 
     fn state_root_with_updates(&self, hashed_state: HashedPostState) -> ProviderResult<(B256, TrieUpdates)> {
+        println!("{}", serde_json::to_string(&hashed_state).unwrap());
         let result = tokio::task::block_in_place(move || {
             Handle::current().block_on(
                 self.provider

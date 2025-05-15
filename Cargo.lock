@@ -568,6 +568,7 @@ dependencies = [
  "revm-database",
  "revm-state",
  "ruint",
+ "serde_json",
  "test-with",
  "tokio",
  "tracing",
