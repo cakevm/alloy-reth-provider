@@ -10,6 +10,9 @@ use reth_trie::updates::TrieUpdates;
 use reth_trie::{HashedPostState, KeccakKeyHasher, TrieInput};
 use revm_database::BundleState;
 use revm_database::DatabaseRef;
+use std::borrow::Cow;
+use std::future::IntoFuture;
+use tokio::runtime::Handle;
 use tracing::warn;
 
 impl<N, P> StateProvider for AlloyRethStateProvider<N, P>
@@ -46,7 +49,17 @@ where
     }
 
     fn state_root_with_updates(&self, hashed_state: HashedPostState) -> ProviderResult<(B256, TrieUpdates)> {
-        self.state_root_from_nodes_with_updates(TrieInput::from_state(hashed_state))
+        let result = tokio::task::block_in_place(move || {
+            Handle::current().block_on(
+                self.provider
+                    .raw_request::<_, (B256, TrieUpdates)>(Cow::Borrowed("debug_stateRootWithUpdates"), (hashed_state, self.block_id))
+                    .into_future(),
+            )
+        });
+        match result {
+            Ok(r) => Ok(r),
+            Err(err) => Err(ProviderError::Other(AnyError::new(err))),
+        }
     }
 
     fn state_root_from_nodes_with_updates(&self, _input: TrieInput) -> ProviderResult<(B256, TrieUpdates)> {

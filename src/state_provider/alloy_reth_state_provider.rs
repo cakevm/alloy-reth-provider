@@ -11,8 +11,10 @@ use tokio::runtime::{Handle, Runtime};
 
 pub struct AlloyRethStateProvider<N: Network, P: Provider<N> + Clone> {
     rt: Option<Runtime>,
+    pub(crate) provider: P,
     pub(crate) alloy_db: WrapDatabaseAsync<AlloyDBFork<N, P>>,
     pub(crate) bytecode: RwLock<HashMap<B256, Bytecode>>,
+    pub(crate) block_id: BlockId,
     _n: PhantomData<N>,
 }
 
@@ -30,7 +32,7 @@ impl<N: Network, P: Provider<N> + Clone> AlloyRethStateProvider<N, P> {
         };
         let alloy_db = AlloyDBFork::new(provider.clone(), block_id);
         let wrapped_db = WrapDatabaseAsync::with_handle(alloy_db, handle);
-        Self { rt: runtime, alloy_db: wrapped_db, bytecode: RwLock::new(HashMap::default()), _n: PhantomData }
+        Self { rt: runtime, provider, alloy_db: wrapped_db, bytecode: RwLock::new(HashMap::default()), block_id, _n: PhantomData }
     }
 }
 
