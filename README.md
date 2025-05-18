@@ -1,6 +1,9 @@
 # Alloy Reth State DB provider
 This crate implements the `StateProviderFactory` and related traits from [reth](https://github.com/paradigmxyz/reth). But instead of using a DB it fetches all state using RPC. This can be useful to not be dependent on a real database when testing e.g. reth ExEx.
 
+## Architecture
+![Architecture](.github/assets/architecture.svg)
+
 ## Example
 See [evm_call.rs](./examples/evm_call.rs) for a complete example.
 
