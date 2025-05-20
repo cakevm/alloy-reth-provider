@@ -4,6 +4,9 @@
 
 # [Unreleased]
 
+# [1.4.3] - 2025-05-20
+- Update reth to 1.4.3
+
 # [1.4.1] - 2025-05-16
 - Update reth to 1.4.1
 - Add implementation for `StateReader`
