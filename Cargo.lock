@@ -547,6 +547,7 @@ dependencies = [
  "eyre",
  "futures-util",
  "op-alloy-network",
+ "op-alloy-rpc-types",
  "parking_lot",
  "reth-chainspec",
  "reth-db-models",

@@ -3,6 +3,7 @@
 # alloy-reth-provider changelog
 
 # [Unreleased]
+- Implement `receipt_by_hash` and `receipts_by_block` in `ReceiptProvider`
 
 # [1.4.3] - 2025-05-20
 - Update reth to 1.4.3
