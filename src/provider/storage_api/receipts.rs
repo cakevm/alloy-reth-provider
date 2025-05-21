@@ -78,6 +78,7 @@ mod tests {
         assert_eq!(receipt.logs.len(), 1);
     }
 
+    #[test_with::no_env(SKIP_RPC_HEAVY_TESTS)]
     #[tokio::test(flavor = "multi_thread", worker_threads = 1)]
     async fn test_receipts_by_block() {
         let node_url = env::var("MAINNET_HTTP").unwrap_or("https://eth.merkle.io".to_string());
