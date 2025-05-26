@@ -1,6 +1,5 @@
 #[cfg(not(feature = "optimism"))]
 mod eth_imports {
-    pub use alloy_consensus::transaction::PooledTransaction;
     pub use alloy_eips::eip4844::env_settings::EnvKzgSettings;
     pub use alloy_eips::{Decodable2718, Encodable2718};
     pub use alloy_provider::{Provider, ProviderBuilder, WsConnect};
@@ -9,6 +8,7 @@ mod eth_imports {
     pub use eyre::eyre;
     pub use futures_util::stream::StreamExt;
     pub use reth_ethereum_primitives::EthPrimitives;
+    pub use reth_ethereum_primitives::PooledTransactionVariant;
     pub use reth_primitives_traits::SignedTransaction;
     pub use reth_provider::StateReader;
     pub use reth_provider::{BlockNumReader, BlockReader, CanonStateNotification, CanonStateSubscriptions, Chain};
@@ -105,7 +105,7 @@ async fn main() -> eyre::Result<()> {
                     // The easiest way to get `alloy_rpc_types_eth` to the reth type is by encoding and decoding
                     // But 4844 transactions are not working yet
                     let tx_raw = tx.inner.encoded_2718();
-                    let tx = match PooledTransaction::decode_2718(&mut tx_raw.as_ref()) {
+                    let tx = match PooledTransactionVariant::decode_2718(&mut tx_raw.as_ref()) {
                         Ok(tx) => tx,
                         Err(e) => {
                             tracing::error!("Error decoding tx: {:?}", e);
