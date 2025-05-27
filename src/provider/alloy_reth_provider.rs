@@ -1,4 +1,5 @@
 use crate::primitives::AlloyRethNodePrimitives;
+use crate::state_provider::alloy_reth_state_provider::AlloyRethStateProviderConfig;
 use crate::AlloyNetwork;
 use alloy_provider::Provider;
 use reth_ethereum_primitives::EthPrimitives;
@@ -10,6 +11,7 @@ use tokio::sync::broadcast;
 pub struct AlloyRethProvider<P: Send + Sync + Debug + Clone + 'static, NP: AlloyRethNodePrimitives> {
     pub(crate) provider: P,
     pub canon_state_notification_sender: CanonStateNotificationSender<EthPrimitives>,
+    pub(crate) state_provider_config: AlloyRethStateProviderConfig,
     _np: NP,
 }
 
@@ -20,7 +22,12 @@ where
 {
     pub fn new(provider: P, _np: NP) -> Self {
         let (canon_state_notification_sender, _) = broadcast::channel(256);
-        Self { provider, canon_state_notification_sender, _np }
+        Self { provider, canon_state_notification_sender, _np, state_provider_config: AlloyRethStateProviderConfig::default() }
+    }
+
+    pub fn new_with_config(provider: P, _np: NP, state_provider_config: AlloyRethStateProviderConfig) -> Self {
+        let (canon_state_notification_sender, _) = broadcast::channel(256);
+        Self { provider, canon_state_notification_sender, _np, state_provider_config }
     }
 }
 

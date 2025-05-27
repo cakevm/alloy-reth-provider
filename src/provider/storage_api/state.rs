@@ -103,7 +103,7 @@ where
     }
 
     fn history_by_block_hash(&self, block: BlockHash) -> ProviderResult<StateProviderBox> {
-        Ok(Box::new(AlloyRethStateProvider::new(self.provider.clone(), block.into())))
+        Ok(Box::new(AlloyRethStateProvider::new_with_config(self.provider.clone(), block.into(), self.state_provider_config.clone())))
     }
 
     fn state_by_block_hash(&self, hash: BlockHash) -> ProviderResult<StateProviderBox> {
