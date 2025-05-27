@@ -1,5 +1,5 @@
 pub use provider::alloy_reth_provider::AlloyRethProvider;
-pub use state_provider::alloy_reth_state_provider::AlloyRethStateProvider;
+pub use state_provider::alloy_reth_state_provider::{AlloyRethStateProvider, AlloyRethStateProviderConfig};
 
 pub mod alloy_db;
 pub mod primitives;
