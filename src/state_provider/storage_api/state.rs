@@ -13,7 +13,7 @@ use revm_database::BundleState;
 use revm_database::DatabaseRef;
 use std::future::IntoFuture;
 use tokio::runtime::Handle;
-use tracing::warn;
+use tracing::{info, warn};
 
 impl<N, P> StateProvider for AlloyRethStateProvider<N, P>
 where
@@ -60,7 +60,10 @@ where
             )
         });
         match result {
-            Ok(r) => Ok(r),
+            Ok(r) => {
+                info!(block=?self.block_id, state_root=?r.0, "Got result for state_root_with_updates");
+                Ok(r)
+            }
             Err(err) => Err(ProviderError::Other(AnyError::new(err))),
         }
     }
