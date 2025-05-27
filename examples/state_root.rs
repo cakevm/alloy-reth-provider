@@ -7,10 +7,12 @@ mod eth_imports {
     pub use alloy_provider::ProviderBuilder;
     pub use alloy_reth_provider::AlloyRethProvider;
     pub use reth_ethereum_primitives::EthPrimitives;
+    pub use reth_provider::BlockReaderIdExt;
     pub use reth_provider::StateProviderFactory;
     pub use reth_provider::{AccountReader, StateRootProvider};
     pub use reth_trie::HashedPostState;
     pub use std::env;
+    pub use std::time::Instant;
 }
 
 #[cfg(not(feature = "optimism"))]
@@ -28,8 +30,10 @@ async fn main() -> eyre::Result<()> {
     let provider = ProviderBuilder::default().connect_http(node_url.parse()?);
     let db_provider = AlloyRethProvider::new(provider, EthPrimitives::default());
 
+    let latest_block_num = db_provider.block_by_id(BlockId::latest())?.ok_or_else(|| eyre::eyre!("Latest block not found"))?.number;
+    let offset = 1;
     // Get state provider for latest block
-    let latest_state = db_provider.state_by_block_id(BlockId::latest())?;
+    let latest_state = db_provider.state_by_block_id(BlockId::number(latest_block_num - offset))?;
 
     // Some random state change
     let address = address!("0x4838b106fce9647bdf1e7877bf73ce8b0bad5f97");
@@ -41,7 +45,10 @@ async fn main() -> eyre::Result<()> {
     let hashed_post_state = HashedPostState { accounts, storages: Default::default() };
 
     // Get the state root and trie for our hashed post state
+    let now = Instant::now();
     let (root, trie) = latest_state.state_root_with_updates(hashed_post_state)?;
+    let elapsed = now.elapsed();
+    println!("State root computed in: {} ms", elapsed.as_millis());
     println!("state root: {}", root);
     println!("account_nodes length: {}", trie.account_nodes.len());
     println!("removed_nodes length: {}", trie.removed_nodes.len());
