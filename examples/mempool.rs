@@ -5,6 +5,7 @@ mod eth_imports {
     pub use alloy_provider::{Provider, ProviderBuilder, WsConnect};
     pub use alloy_reth_provider::utils::rpc_block_to_recovered_block;
     pub use alloy_reth_provider::AlloyRethProvider;
+    pub use alloy_reth_provider::{AlloyRethProviderConfig, GetStateExecutionOutcome};
     pub use eyre::eyre;
     pub use futures_util::stream::StreamExt;
     pub use reth_ethereum_primitives::EthPrimitives;
@@ -44,7 +45,8 @@ async fn main() -> eyre::Result<()> {
 
     let ws = WsConnect::new("wss://eth.llamarpc.com");
     let ws_provider = ProviderBuilder::new().connect_ws(ws).await?;
-    let reth_provider = AlloyRethProvider::new(ws_provider.clone(), EthPrimitives::default());
+    let config = AlloyRethProviderConfig { get_state_execution_outcome: GetStateExecutionOutcome::Full, ..Default::default() };
+    let reth_provider = AlloyRethProvider::new_with_config(ws_provider.clone(), EthPrimitives::default(), config);
 
     let canon_state_notification_sender = reth_provider.canon_state_notification_sender.clone();
     let block_subscription = ws_provider.subscribe_full_blocks().full();

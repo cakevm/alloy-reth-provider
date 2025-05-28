@@ -1,4 +1,4 @@
-pub use provider::alloy_reth_provider::AlloyRethProvider;
+pub use provider::alloy_reth_provider::{AlloyRethProvider, AlloyRethProviderConfig, GetStateExecutionOutcome};
 pub use state_provider::alloy_reth_state_provider::{AlloyRethStateProvider, AlloyRethStateProviderConfig};
 
 pub mod alloy_db;
