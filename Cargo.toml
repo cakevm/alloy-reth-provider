@@ -4,8 +4,8 @@ version = "1.4.3-v2"
 edition = "2021"
 license = "MIT OR Apache-2.0"
 rust-version = "1.85"
-homepage = "https://github.com/cakevm/alloy-reth-provider"
-repository = "https://github.com/cakevm/alloy-reth-provider"
+homepage = "https://github.com/paradigmxyz/alloy-reth-provider"
+repository = "https://github.com/paradigmxyz/alloy-reth-provider"
 exclude = [".github/"]
 description = "Implement reth StateProviderFactory traits for remote RPC usage"
 
@@ -37,23 +37,27 @@ op-alloy-network = { version = "0.17.1", default-features = false, optional = tr
 op-alloy-rpc-types = { version = "0.17.1", default-features = false, optional = true }
 
 # reth
-reth-chainspec = { git = "https://github.com/cakevm/reth", rev = "7b4b9c0", default-features = false }
-reth-db-models = { git = "https://github.com/cakevm/reth", rev = "7b4b9c0", default-features = false }
-reth-errors = { git = "https://github.com/cakevm/reth", rev = "7b4b9c0", default-features = false }
-reth-evm = { git = "https://github.com/cakevm/reth", rev = "7b4b9c0", default-features = false }
-reth-primitives = { git = "https://github.com/cakevm/reth", rev = "7b4b9c0", default-features = false, features = ["serde-bincode-compat"] }
-reth-primitives-traits = { git = "https://github.com/cakevm/reth", rev = "7b4b9c0", default-features = false }
-reth-provider = { git = "https://github.com/cakevm/reth", rev = "7b4b9c0", default-features = false }
-reth-revm = { git = "https://github.com/cakevm/reth", rev = "7b4b9c0", default-features = false }
-reth-trie = { git = "https://github.com/cakevm/reth", rev = "7b4b9c0", default-features = false }
+reth-chainspec = { git = "https://github.com/paradigmxyz/reth", rev = "a4a9bca", default-features = false }
+reth-db-models = { git = "https://github.com/paradigmxyz/reth", rev = "a4a9bca", default-features = false }
+reth-errors = { git = "https://github.com/paradigmxyz/reth", rev = "a4a9bca", default-features = false }
+reth-evm = { git = "https://github.com/paradigmxyz/reth", rev = "a4a9bca", default-features = false }
+reth-primitives = { git = "https://github.com/paradigmxyz/reth", rev = "a4a9bca", default-features = false, features = [
+  "serde-bincode-compat",
+] }
+reth-primitives-traits = { git = "https://github.com/paradigmxyz/reth", rev = "a4a9bca", default-features = false }
+reth-provider = { git = "https://github.com/paradigmxyz/reth", rev = "a4a9bca", default-features = false }
+reth-revm = { git = "https://github.com/paradigmxyz/reth", rev = "a4a9bca", default-features = false }
+reth-trie = { git = "https://github.com/paradigmxyz/reth", rev = "a4a9bca", default-features = false }
 
 # ethereum
-reth-ethereum-primitives = { git = "https://github.com/cakevm/reth", rev = "7b4b9c0", default-features = false, features = ["reth-codec"] }
-reth-evm-ethereum = { git = "https://github.com/cakevm/reth", rev = "7b4b9c0", default-features = false }
+reth-ethereum-primitives = { git = "https://github.com/paradigmxyz/reth", rev = "a4a9bca", default-features = false, features = [
+  "reth-codec",
+] }
+reth-evm-ethereum = { git = "https://github.com/paradigmxyz/reth", rev = "a4a9bca", default-features = false }
 
 # optimism
-reth-optimism-chainspec = { git = "https://github.com/cakevm/reth", rev = "7b4b9c0", default-features = false, optional = true }
-reth-optimism-primitives = { git = "https://github.com/cakevm/reth", rev = "7b4b9c0", default-features = false, features = [
+reth-optimism-chainspec = { git = "https://github.com/paradigmxyz/reth", rev = "a4a9bca", default-features = false, optional = true }
+reth-optimism-primitives = { git = "https://github.com/paradigmxyz/reth", rev = "a4a9bca", default-features = false, features = [
   "alloy-compat",
   "reth-codec",
   "serde",
@@ -69,9 +73,9 @@ alloy-node-bindings = "1.0.8"
 alloy-provider = { version = "1.0.8", default-features = false, features = ["alloy-transport-ws", "reqwest", "reqwest-default-tls", "ws"] }
 eyre = "0.6.12"
 futures-util = "0.3.31"
-reth-revm = { git = "https://github.com/cakevm/reth", rev = "7b4b9c0" }
-reth-tasks = { git = "https://github.com/cakevm/reth", rev = "7b4b9c0" }
-reth-transaction-pool = { git = "https://github.com/cakevm/reth", rev = "7b4b9c0" }
+reth-revm = { git = "https://github.com/paradigmxyz/reth", rev = "a4a9bca" }
+reth-tasks = { git = "https://github.com/paradigmxyz/reth", rev = "a4a9bca" }
+reth-transaction-pool = { git = "https://github.com/paradigmxyz/reth", rev = "a4a9bca" }
 ruint = "1.15.0"
 test-with = { version = "0.14.10", default-features = false }
 tracing-subscriber = { version = "0.3.19", features = ["env-filter"] }
