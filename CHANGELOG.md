@@ -4,6 +4,10 @@
 
 # [Unreleased]
 - Implement `receipt_by_hash` and `receipts_by_block` in `ReceiptProvider`
+- Introduce config for `AlloyRethProvider` and `AlloyRethStateProvider`
+  - This config allows to alter the return behavior of the provider for testing purposes
+- Implement optional `state_root_with_updates` using `debug_stateRootWithUpdates`
+- Implement `block_by_id` in `BlockReaderIdExt`
 
 # [1.4.3] - 2025-05-20
 - Update reth to 1.4.3

@@ -1,4 +1,5 @@
 use crate::AlloyRethStateProvider;
+use alloy_eips::BlockId;
 use alloy_network::Network;
 use alloy_primitives::{Address, StorageKey, StorageValue, B256};
 use alloy_provider::Provider;
@@ -10,7 +11,9 @@ use reth_trie::updates::TrieUpdates;
 use reth_trie::{HashedPostState, KeccakKeyHasher, TrieInput};
 use revm_database::BundleState;
 use revm_database::DatabaseRef;
-use tracing::warn;
+use std::future::IntoFuture;
+use tokio::runtime::Handle;
+use tracing::{info, warn};
 
 impl<N, P> StateProvider for AlloyRethStateProvider<N, P>
 where
@@ -46,7 +49,27 @@ where
     }
 
     fn state_root_with_updates(&self, hashed_state: HashedPostState) -> ProviderResult<(B256, TrieUpdates)> {
-        self.state_root_from_nodes_with_updates(TrieInput::from_state(hashed_state))
+        if !self.config.enable_state_root_updates {
+            return Ok((B256::ZERO, TrieUpdates::default()));
+        }
+
+        let result = tokio::task::block_in_place(move || {
+            Handle::current().block_on(
+                self.provider
+                    .raw_request::<(HashedPostState, BlockId), (B256, TrieUpdates)>(
+                        "debug_stateRootWithUpdates".into(),
+                        (hashed_state, self.block_id),
+                    )
+                    .into_future(),
+            )
+        });
+        match result {
+            Ok(r) => {
+                info!(block=?self.block_id, state_root=?r.0, "Got result for state_root_with_updates");
+                Ok(r)
+            }
+            Err(err) => Err(ProviderError::Other(AnyError::new(err))),
+        }
     }
 
     fn state_root_from_nodes_with_updates(&self, _input: TrieInput) -> ProviderResult<(B256, TrieUpdates)> {

@@ -145,8 +145,11 @@ where
     P: Provider<AlloyNetwork> + Send + Sync + Debug + Clone + 'static,
     NP: AlloyRethNodePrimitives,
 {
-    fn block_by_id(&self, _id: BlockId) -> ProviderResult<Option<Self::Block>> {
-        todo!()
+    fn block_by_id(&self, id: BlockId) -> ProviderResult<Option<Self::Block>> {
+        match id {
+            BlockId::Number(num) => self.block_by_number_or_tag(num),
+            BlockId::Hash(hash) => self.block_by_hash(hash.block_hash),
+        }
     }
 
     fn sealed_header_by_id(&self, _id: BlockId) -> ProviderResult<Option<SealedHeader<Self::Header>>> {
