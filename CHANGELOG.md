@@ -2,7 +2,8 @@
 
 # alloy-reth-provider changelog
 
-# [Unreleased]
+# [1.4.7] - 2025-06-03
+- Update reth to 1.4.7
 - Implement `receipt_by_hash` and `receipts_by_block` in `ReceiptProvider`
 - Introduce config for `AlloyRethProvider` and `AlloyRethStateProvider`
   - This config allows to alter the return behavior of the provider for testing purposes

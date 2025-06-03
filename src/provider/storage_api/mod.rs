@@ -7,4 +7,3 @@ mod ommers;
 mod receipts;
 mod state;
 mod transactions;
-mod withdrawals;
