@@ -2,6 +2,13 @@
 
 # alloy-reth-provider changelog
 
+# [Unreleased]
+
+# [1.4.8] - 2025-06-04
+- Update reth to 1.4.8
+- Add `RethApi` to use `reth_subscribeChainNotifications` to populate the `CanonStateSubscriptions`
+- Add example for `CanonStateSubscriptions` in `examples/chain_notifications.rs`
+
 # [1.4.7] - 2025-06-03
 - Update reth to 1.4.7
 - Implement `receipt_by_hash` and `receipts_by_block` in `ReceiptProvider`
