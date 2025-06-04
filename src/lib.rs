@@ -8,6 +8,12 @@ mod state_provider;
 pub mod utils;
 
 #[cfg(not(feature = "optimism"))]
+pub use reth_api::RethApi;
+
+#[cfg(not(feature = "optimism"))]
+mod reth_api;
+
+#[cfg(not(feature = "optimism"))]
 pub type AlloyNetwork = alloy_network::Ethereum;
 
 #[cfg(feature = "optimism")]

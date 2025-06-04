@@ -159,8 +159,4 @@ where
     fn header_by_id(&self, _id: BlockId) -> ProviderResult<Option<Self::Header>> {
         todo!()
     }
-
-    fn ommers_by_id(&self, _id: BlockId) -> ProviderResult<Option<Vec<Self::Header>>> {
-        todo!()
-    }
 }
