@@ -6,7 +6,7 @@ use reth_chain_state::CanonStateNotification;
 
 #[async_trait]
 pub trait RethApi<N>: Send + Sync {
-    async fn subscribe_subscribe_chain_notifications(&self) -> TransportResult<alloy_pubsub::Subscription<CanonStateNotification>>;
+    async fn subscribe_chain_notifications(&self) -> TransportResult<alloy_pubsub::Subscription<CanonStateNotification>>;
 }
 
 #[async_trait]
@@ -15,7 +15,7 @@ where
     N: Network,
     P: Provider<N>,
 {
-    async fn subscribe_subscribe_chain_notifications(&self) -> TransportResult<alloy_pubsub::Subscription<CanonStateNotification>> {
+    async fn subscribe_chain_notifications(&self) -> TransportResult<alloy_pubsub::Subscription<CanonStateNotification>> {
         self.root().client().pubsub_frontend().ok_or_else(alloy_transport::TransportErrorKind::pubsub_unavailable)?;
 
         let mut call = self.client().request("reth_subscribeChainNotifications", ());

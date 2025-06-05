@@ -40,7 +40,7 @@ async fn main() -> eyre::Result<()> {
     let executor = manager.executor();
 
     // Subscribe to canon state notifications
-    let chain_notifications = match ws_provider.subscribe_subscribe_chain_notifications().await {
+    let chain_notifications = match ws_provider.subscribe_chain_notifications().await {
         Ok(subscription) => subscription,
         Err(e) => {
             eprintln!("Failed to subscribe to chain notifications: {}", e);
