@@ -6,7 +6,7 @@ use alloy_provider::Provider;
 use reth_errors::{ProviderError, ProviderResult};
 use reth_primitives_traits::Bytecode;
 use reth_provider::errors::any::AnyError;
-use reth_provider::{HashedPostStateProvider, StateProvider, StateRootProvider};
+use reth_provider::{BytecodeReader, HashedPostStateProvider, StateProvider, StateRootProvider};
 use reth_trie::updates::TrieUpdates;
 use reth_trie::{HashedPostState, KeccakKeyHasher, TrieInput};
 use revm_database::BundleState;
@@ -14,6 +14,18 @@ use revm_database::DatabaseRef;
 use std::future::IntoFuture;
 use tokio::runtime::Handle;
 use tracing::warn;
+
+impl<N, P> BytecodeReader for AlloyRethStateProvider<N, P>
+where
+    N: Network,
+    P: Clone + Provider<N>,
+{
+    // Will be easier with https://github.com/paradigmxyz/reth/issues/14479
+    fn bytecode_by_hash(&self, code_hash: &B256) -> ProviderResult<Option<Bytecode>> {
+        // revm will first call account info, which will insert the bytecode into the hashmap
+        Ok(self.bytecode.read().get(code_hash).cloned())
+    }
+}
 
 impl<N, P> StateProvider for AlloyRethStateProvider<N, P>
 where
@@ -25,12 +37,6 @@ where
             Ok(value) => Ok(Some(value)),
             Err(e) => Err(ProviderError::Other(AnyError::new(e))),
         }
-    }
-
-    // Will be easier with https://github.com/paradigmxyz/reth/issues/14479
-    fn bytecode_by_hash(&self, code_hash: &B256) -> ProviderResult<Option<Bytecode>> {
-        // revm will first call account info, which will insert the bytecode into the hashmap
-        Ok(self.bytecode.read().get(code_hash).cloned())
     }
 }
 
