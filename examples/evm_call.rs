@@ -9,10 +9,8 @@ mod eth_imports {
     pub use reth_provider::StateProviderFactory;
     pub use reth_revm::database::StateProviderDatabase;
     pub use reth_revm::{ExecuteEvm, MainBuilder, MainContext};
-    pub use revm::handler::EthPrecompiles;
-    pub use revm::inspector::NoOpInspector;
     pub use revm_context::result::ResultAndState;
-    pub use revm_context::{BlockEnv, Context, Evm, TransactTo, TxEnv};
+    pub use revm_context::{BlockEnv, Context, TransactTo, TxEnv};
     pub use std::str::FromStr;
 }
 #[cfg(not(feature = "optimism"))]
@@ -32,12 +30,12 @@ async fn main() -> eyre::Result<()> {
     let state_provider = db_provider.state_by_block_id(BlockId::number(16148322))?;
     let state_db = StateProviderDatabase::new(state_provider);
 
-    let ctx = Context::mainnet()
+    let mut evm = Context::mainnet()
         .with_db(state_db)
         .with_block(BlockEnv {
             // next block
-            number: 16148323,
-            timestamp: 1670565947,
+            number: U256::from(16148323),
+            timestamp: U256::from(1670565947),
             basefee: 176_658583385,
             ..BlockEnv::default()
         })
@@ -60,7 +58,6 @@ async fn main() -> eyre::Result<()> {
         ..TxEnv::default()
     };
 
-    let mut evm = Evm::new(ctx, NoOpInspector, EthPrecompiles::default());
     let ResultAndState { result, state } = evm.transact(tx)?;
 
     println!("Success: {}", result.is_success());
