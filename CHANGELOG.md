@@ -4,6 +4,9 @@
 
 # [Unreleased]
 
+# [1.5.0] - 2025-06-26
+- Update reth to 1.5.0
+
 # [1.4.8] - 2025-06-04
 - Update reth to 1.4.8
 - Add `RethApi` to use `reth_subscribeChainNotifications` to populate the `CanonStateSubscriptions`
