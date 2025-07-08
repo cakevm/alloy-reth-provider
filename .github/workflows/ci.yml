@@ -94,7 +94,7 @@ jobs:
           ref: ${{ github.event.pull_request.head.sha || github.ref }}
       - uses: EmbarkStudios/cargo-deny-action@v1
         with:
-          rust-version: "1.85.0"
+          rust-version: "1.86.0"
           log-level: warn
           command: check
           arguments: --all-features

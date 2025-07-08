@@ -6,7 +6,7 @@ use alloy_network::BlockResponse;
 use alloy_primitives::{BlockNumber, B256};
 use alloy_provider::Provider;
 use reth_errors::{ProviderError, ProviderResult};
-use reth_primitives::{BlockBody, RecoveredBlock, SealedBlock};
+use reth_primitives::{BlockBody, RecoveredBlock};
 use reth_primitives_traits::{Block, SealedHeader};
 use reth_provider::errors::any::AnyError;
 use reth_provider::{BlockReader, BlockReaderIdExt, BlockSource, TransactionVariant};
@@ -103,7 +103,7 @@ where
         todo!()
     }
 
-    fn pending_block_and_receipts(&self) -> ProviderResult<Option<(SealedBlock<Self::Block>, Vec<Self::Receipt>)>> {
+    fn pending_block_and_receipts(&self) -> ProviderResult<Option<(RecoveredBlock<Self::Block>, Vec<Self::Receipt>)>> {
         todo!()
     }
 

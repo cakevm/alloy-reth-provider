@@ -4,6 +4,9 @@
 
 # [Unreleased]
 
+# [1.5.1] - 2025-07-08
+- Update reth to 1.5.1
+
 # [1.5.0] - 2025-06-26
 - Update reth to 1.5.0
 
