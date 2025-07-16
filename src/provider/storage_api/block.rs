@@ -148,11 +148,21 @@ where
         }
     }
 
-    fn sealed_header_by_id(&self, _id: BlockId) -> ProviderResult<Option<SealedHeader<Self::Header>>> {
-        todo!()
+    fn sealed_header_by_id(&self, id: BlockId) -> ProviderResult<Option<SealedHeader<Self::Header>>> {
+        let block = tokio::task::block_in_place(move || Handle::current().block_on(self.provider.get_block(id).into_future()))
+            .map_err(|e| ProviderError::Other(AnyError::new(e)))?;
+        let Some(block) = block else {
+            return Ok(None);
+        };
+        Ok(Some(SealedHeader::new_unhashed(block.into_header().into())))
     }
 
-    fn header_by_id(&self, _id: BlockId) -> ProviderResult<Option<Self::Header>> {
-        todo!()
+    fn header_by_id(&self, id: BlockId) -> ProviderResult<Option<Self::Header>> {
+        let block = tokio::task::block_in_place(move || Handle::current().block_on(self.provider.get_block(id).into_future()))
+            .map_err(|e| ProviderError::Other(AnyError::new(e)))?;
+        let Some(block) = block else {
+            return Ok(None);
+        };
+        Ok(Some(block.into_header().into()))
     }
 }
